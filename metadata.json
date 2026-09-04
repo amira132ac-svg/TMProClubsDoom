@@ -1,0 +1,6 @@
+{
+  "name": "TM PROCLUBS — DOOMSDAY",
+  "description": "Official tournament platform for TM PROCLUBS — DOOMSDAY: FINAL CROWN. Elite 11v11 esports competition, team brackets, live match center, and standings.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

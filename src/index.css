@@ -1,0 +1,228 @@
+@import "tailwindcss";
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  
+  html {
+    font-family: 'Rajdhani', system-ui, -apple-system, sans-serif;
+    background-color: #030504;
+    color: #e2e8f0;
+  }
+}
+
+/* Custom Doomsday Fonts */
+.font-esports {
+  font-family: 'Teko', 'Barlow Condensed', 'Rajdhani', sans-serif;
+}
+
+.font-condensed {
+  font-family: 'Barlow Condensed', 'Rajdhani', sans-serif;
+}
+
+.font-tech {
+  font-family: 'Chakra Petch', 'Rajdhani', monospace;
+}
+
+/* Metallic Silver & Toxic Neon Typography */
+.text-metallic-title {
+  background: linear-gradient(180deg, #ffffff 0%, #e2e8f0 30%, #94a3b8 70%, #475569 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 20px rgba(0, 255, 102, 0.35)) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.9));
+  letter-spacing: -0.02em;
+}
+
+.text-metallic-silver {
+  background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 50%, #64748b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-toxic-neon {
+  color: #00ff66;
+  text-shadow: 0 0 10px rgba(0, 255, 102, 0.6), 0 0 25px rgba(0, 255, 102, 0.25);
+}
+
+.text-toxic-subtle {
+  color: #10b981;
+  text-shadow: 0 0 8px rgba(16, 185, 129, 0.35);
+}
+
+/* Atmospheric Glows */
+.glow-toxic-box {
+  box-shadow: 0 0 30px -5px rgba(0, 255, 102, 0.25), inset 0 0 20px rgba(0, 255, 102, 0.05);
+}
+
+.glow-toxic-box-sm {
+  box-shadow: 0 0 15px -3px rgba(0, 255, 102, 0.2);
+}
+
+.border-neon-toxic {
+  border-color: rgba(0, 255, 102, 0.35);
+}
+
+.border-neon-toxic-strong {
+  border-color: #00ff66;
+  box-shadow: 0 0 10px rgba(0, 255, 102, 0.4);
+}
+
+/* Doomsday Diagonal Scratches & Industrial Textures */
+.bg-doomsday-scratches {
+  background-image: 
+    repeating-linear-gradient(
+      -45deg,
+      rgba(0, 255, 102, 0.015),
+      rgba(0, 255, 102, 0.015) 1px,
+      transparent 1px,
+      transparent 35px
+    ),
+    repeating-linear-gradient(
+      60deg,
+      rgba(255, 255, 255, 0.01),
+      rgba(255, 255, 255, 0.01) 1px,
+      transparent 1px,
+      transparent 55px
+    );
+}
+
+.bg-industrial-grid {
+  background-size: 50px 50px;
+  background-image: 
+    linear-gradient(to right, rgba(0, 255, 102, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 255, 102, 0.03) 1px, transparent 1px);
+}
+
+.bg-apocalyptic-fog {
+  background: radial-gradient(circle at 50% 30%, rgba(0, 255, 102, 0.09) 0%, rgba(5, 30, 20, 0.3) 40%, transparent 75%);
+}
+
+/* Doomsday Tournament Roster Panels */
+.panel-doomsday {
+  background: linear-gradient(180deg, rgba(8, 16, 12, 0.85) 0%, rgba(3, 7, 5, 0.92) 100%);
+  border: 1px solid rgba(0, 255, 102, 0.28);
+  box-shadow: 
+    0 20px 50px -10px rgba(0, 0, 0, 0.9),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 0 30px rgba(0, 255, 102, 0.04);
+  position: relative;
+}
+
+.panel-corner-accents::before,
+.panel-corner-accents::after {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-color: #00ff66;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.panel-corner-accents::before {
+  top: -1px;
+  left: -1px;
+  border-top: 2px solid #00ff66;
+  border-left: 2px solid #00ff66;
+}
+
+.panel-corner-accents::after {
+  bottom: -1px;
+  right: -1px;
+  border-bottom: 2px solid #00ff66;
+  border-right: 2px solid #00ff66;
+}
+
+/* Diamond decoration */
+.diamond-marker {
+  width: 6px;
+  height: 6px;
+  transform: rotate(45deg);
+  background-color: #00ff66;
+  box-shadow: 0 0 6px rgba(0, 255, 102, 0.8);
+}
+
+.diamond-marker-dim {
+  width: 5px;
+  height: 5px;
+  transform: rotate(45deg);
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Glass Card */
+.glass-panel {
+  background: rgba(8, 14, 11, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 255, 102, 0.2);
+}
+
+/* Metallic Buttons */
+.btn-metallic {
+  background: linear-gradient(180deg, #1f2937 0%, #111827 50%, #030705 100%);
+  border: 1px solid rgba(0, 255, 102, 0.4);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 4px 15px rgba(0, 0, 0, 0.6);
+  transition: all 0.25s ease;
+}
+
+.btn-metallic:hover {
+  border-color: #00ff66;
+  box-shadow: 0 0 20px rgba(0, 255, 102, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Animated Fog Mist */
+@keyframes fogDrift {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.25;
+  }
+  50% {
+    transform: translate(30px, -15px) scale(1.08);
+    opacity: 0.4;
+  }
+  100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.25;
+  }
+}
+
+.animate-fog-slow {
+  animation: fogDrift 18s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.3;
+    filter: drop-shadow(0 0 15px rgba(0, 255, 102, 0.3));
+  }
+  50% {
+    opacity: 0.7;
+    filter: drop-shadow(0 0 30px rgba(0, 255, 102, 0.7));
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 4s ease-in-out infinite;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #030504;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #064e3b;
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #00ff66;
+}
+
