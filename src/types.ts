@@ -39,6 +39,13 @@ export interface BestOfThreeGame {
   status: 'FINISHED' | 'UPCOMING' | 'NOT_NEEDED';
 }
 
+export interface MatchLegScore {
+  matchNumber: number;
+  homeScore: number;
+  awayScore: number;
+  note?: string;
+}
+
 export interface TournamentMatch {
   id: string;
   homeTeam: string;
@@ -56,7 +63,14 @@ export interface TournamentMatch {
   minute?: string;
   arena: string;
   broadcastLive?: boolean;
-  format?: 'BO3' | 'SINGLE';
+  format?: 'BO3' | 'SINGLE' | 'TWO_MATCH';
+  legs?: MatchLegScore[];
+  pointsBreakdown?: {
+    home: number;
+    away: number;
+    homeSummary?: string;
+    awaySummary?: string;
+  };
   seriesScore?: { homeWins: number; awayWins: number };
   games?: BestOfThreeGame[];
   notes?: string;

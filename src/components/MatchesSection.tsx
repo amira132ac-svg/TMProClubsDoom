@@ -33,6 +33,32 @@ export const MatchesSection: React.FC<MatchesSectionProps> = ({ onSelectTeamByNa
     }
   };
 
+  const getTeamShortCode = (name: string): string => {
+    const n = name.toLowerCase().trim();
+    if (n.includes('tehran')) return 'TLG';
+    if (n.includes('banger')) return 'BNG';
+    if (n.includes('royal')) return 'RMD';
+    if (n.includes('18v')) return '18V';
+    if (n.includes('spirit')) return 'SPI';
+    if (n.includes('alnahd') || n.includes('al nahd')) return 'ALN';
+    if (n.includes('invader')) return 'INV';
+    if (n.includes('mehrgan')) return 'AMF';
+    if (n.includes('adab')) return 'ADB';
+    if (n.includes('shamooshak')) return 'SHM';
+    if (n.includes('110')) return '110';
+    if (n.includes('pars')) return 'PRS';
+    if (n.includes('mess')) return 'MSH';
+    if (n.includes('viking')) return 'VIK';
+    if (n.includes('vafadar')) return 'VFD';
+    if (n.includes('gorgali')) return 'GRG';
+    if (n.includes('hangover')) return 'HNG';
+    if (n.includes('soroush')) return 'SRH';
+    return name.slice(0, 3).toUpperCase();
+  };
+
+  const league1UpcomingCount = upcomingMatches.filter((m) => m.league === 'LEAGUE 1').length;
+  const league2UpcomingCount = upcomingMatches.filter((m) => m.league === 'LEAGUE 2').length;
+
   return (
     <section id="matches" className="py-20 sm:py-24 relative overflow-hidden bg-[#030504]">
       {/* Ambient background glows */}
@@ -49,7 +75,7 @@ export const MatchesSection: React.FC<MatchesSectionProps> = ({ onSelectTeamByNa
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-sm bg-[#05140b] border border-[#00ff66]/40 text-[#00ff66] text-xs font-tech font-bold tracking-[0.25em] uppercase mb-3">
               <Swords className="w-3.5 h-3.5 text-[#00ff66]" />
-              <span>OFFICIAL FIXTURES & BEST-OF-3 RESULTS</span>
+              <span>OFFICIAL FIXTURES & MATCH RESULTS</span>
             </div>
             <h2 className="font-esports font-black text-4xl sm:text-6xl uppercase text-metallic-title tracking-tight leading-none">
               DOOMSDAY MATCH CENTER
@@ -78,7 +104,7 @@ export const MatchesSection: React.FC<MatchesSectionProps> = ({ onSelectTeamByNa
                   : 'text-slate-400 hover:text-white'
               }`}
             >
-              LEAGUE 1 (8)
+              LEAGUE 1 ({league1UpcomingCount})
             </button>
             <button
               type="button"
@@ -89,7 +115,7 @@ export const MatchesSection: React.FC<MatchesSectionProps> = ({ onSelectTeamByNa
                   : 'text-slate-400 hover:text-white'
               }`}
             >
-              LEAGUE 2 (7)
+              LEAGUE 2 ({league2UpcomingCount})
             </button>
             <button
               type="button"
@@ -120,7 +146,7 @@ export const MatchesSection: React.FC<MatchesSectionProps> = ({ onSelectTeamByNa
         </div>
 
         {/* ======================================================== */}
-        {/* COMPLETED RESULTS SECTION (BOTH MATCHES DISPLAYED)        */}
+        {/* COMPLETED RESULTS SECTION (BOTH MATCHES IN ONE CARD)     */}
         {/* ======================================================== */}
         {showResults && completedMatches.length > 0 && (
           <div className="mb-14">
@@ -128,16 +154,16 @@ export const MatchesSection: React.FC<MatchesSectionProps> = ({ onSelectTeamByNa
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 bg-[#00ff66] rounded-full animate-pulse shadow-[0_0_8px_#00ff66]" />
                 <h3 className="font-esports font-bold text-lg sm:text-xl text-white tracking-widest uppercase">
-                  COMPLETED MATCH RESULTS ({completedMatches.length})
+                  COMPLETED FIXTURE RESULTS ({completedMatches.length})
                 </h3>
               </div>
               <span className="text-xs font-tech text-[#00ff66] font-bold">
-                TEHRAN LEGACY: 2 WINS • 6 PTS
+                2 MATCHES COMBINED PER FIXTURE
               </span>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {completedMatches.map((match, idx) => (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+              {completedMatches.map((match) => (
                 <div
                   key={match.id}
                   className="panel-doomsday panel-corner-accents rounded-sm p-5 sm:p-6 border border-[#00ff66]/40 relative overflow-hidden shadow-2xl bg-gradient-to-r from-[#040c07] via-[#05130b] to-[#040c07]"
@@ -149,7 +175,7 @@ export const MatchesSection: React.FC<MatchesSectionProps> = ({ onSelectTeamByNa
                         {match.league ?? 'LEAGUE 1'}
                       </span>
                       <span className="px-2 py-0.5 rounded-sm bg-white/5 text-slate-300 border border-white/10 font-bold">
-                        MATCH {idx + 1} OF 2
+                        2 MATCHES PLAYED
                       </span>
                       <span className="text-slate-400 hidden sm:inline">
                         • {match.arena}
@@ -158,7 +184,7 @@ export const MatchesSection: React.FC<MatchesSectionProps> = ({ onSelectTeamByNa
 
                     <div className="flex items-center gap-1.5 text-xs font-bold text-[#00ff66]">
                       <CheckCircle2 className="w-4 h-4 text-[#00ff66]" />
-                      <span>FT: {match.homeTeam} WIN (+3 PTS)</span>
+                      <span>SERIES FINAL</span>
                     </div>
                   </div>
 
@@ -169,33 +195,33 @@ export const MatchesSection: React.FC<MatchesSectionProps> = ({ onSelectTeamByNa
                       onClick={() => handleTeamClick(match.homeTeam)}
                       className="flex-1 text-left cursor-pointer group/team"
                     >
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-10 h-10 rounded-sm bg-[#071f11] border border-[#00ff66] flex items-center justify-center font-esports font-bold text-base text-[#00ff66] shrink-0">
-                          TLG
+                      <div className="flex items-center gap-2.5 sm:gap-3">
+                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-sm bg-[#071f11] border border-[#00ff66] flex items-center justify-center font-esports font-bold text-sm sm:text-base text-[#00ff66] shrink-0 group-hover/team:scale-105 transition-transform">
+                          {getTeamShortCode(match.homeTeam)}
                         </div>
                         <div>
-                          <span className="text-[10px] font-tech text-[#00ff66] font-bold block">
-                            WINNER (+3 PTS)
+                          <span className="text-[10px] font-tech text-[#00ff66] font-bold block uppercase tracking-wider">
+                            {match.pointsBreakdown?.homeSummary ?? `${match.pointsBreakdown?.home ?? 0} PTS`}
                           </span>
-                          <h4 className="font-esports font-bold text-base sm:text-lg text-white group-hover/team:text-[#00ff66] transition-colors">
+                          <h4 className="font-esports font-bold text-base sm:text-xl text-white group-hover/team:text-[#00ff66] transition-colors leading-tight">
                             {match.homeTeam}
                           </h4>
                         </div>
                       </div>
                     </div>
 
-                    {/* Score Center */}
-                    <div className="flex flex-col items-center justify-center px-4 py-1.5 bg-[#030805] rounded-sm border border-white/10 shrink-0">
+                    {/* Aggregate Score Center */}
+                    <div className="flex flex-col items-center justify-center px-3 sm:px-4 py-1.5 bg-[#030805] rounded-sm border border-white/10 shrink-0">
                       <span className="text-[9px] font-tech font-bold text-slate-400 uppercase tracking-widest mb-0.5">
-                        FINAL SCORE
+                        AGGREGATE
                       </span>
-                      <div className="flex items-center gap-2.5">
+                      <div className="flex items-center gap-2">
                         <span className="font-esports font-black text-2xl sm:text-3xl text-[#00ff66]">
-                          {match.homeScore ?? 3}
+                          {match.homeScore ?? 0}
                         </span>
                         <span className="text-slate-600 font-tech text-base font-bold">—</span>
                         <span className="font-esports font-black text-2xl sm:text-3xl text-slate-300">
-                          {match.awayScore ?? 1}
+                          {match.awayScore ?? 0}
                         </span>
                       </div>
                     </div>
@@ -205,26 +231,62 @@ export const MatchesSection: React.FC<MatchesSectionProps> = ({ onSelectTeamByNa
                       onClick={() => handleTeamClick(match.awayTeam)}
                       className="flex-1 text-right cursor-pointer group/team"
                     >
-                      <div className="flex items-center justify-end gap-2.5">
+                      <div className="flex items-center justify-end gap-2.5 sm:gap-3">
                         <div>
-                          <span className="text-[10px] font-tech text-slate-500 font-bold block">
-                            0 PTS
+                          <span className="text-[10px] font-tech text-slate-400 font-bold block uppercase tracking-wider">
+                            {match.pointsBreakdown?.awaySummary ?? `${match.pointsBreakdown?.away ?? 0} PTS`}
                           </span>
-                          <h4 className="font-esports font-bold text-base sm:text-lg text-white group-hover/team:text-[#00ff66] transition-colors">
+                          <h4 className="font-esports font-bold text-base sm:text-xl text-white group-hover/team:text-[#00ff66] transition-colors leading-tight">
                             {match.awayTeam}
                           </h4>
                         </div>
-                        <div className="w-10 h-10 rounded-sm bg-[#120808] border border-red-900/40 flex items-center justify-center font-esports font-bold text-base text-slate-300 shrink-0">
-                          BNG
+                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-sm bg-[#120808] border border-red-900/40 flex items-center justify-center font-esports font-bold text-sm sm:text-base text-slate-300 shrink-0 group-hover/team:scale-105 transition-transform">
+                          {getTeamShortCode(match.awayTeam)}
                         </div>
                       </div>
+                    </div>
+                  </div>
+
+                  {/* Individual Match Scores Together in the Same Card */}
+                  <div className="mt-4 pt-3 border-t border-white/10">
+                    <div className="flex items-center justify-between text-[11px] font-tech text-slate-400 mb-2">
+                      <span className="uppercase font-bold tracking-wider flex items-center gap-1.5 text-white">
+                        <Layers className="w-3.5 h-3.5 text-[#00ff66]" />
+                        BOTH MATCHES BREAKDOWN (بازی‌های رو در رو)
+                      </span>
+                      <span className="text-[#00ff66] font-bold">
+                        {match.pointsBreakdown ? `${match.pointsBreakdown.home} PTS vs ${match.pointsBreakdown.away} PTS` : ''}
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      {match.legs?.map((leg) => (
+                        <div
+                          key={leg.matchNumber}
+                          className="p-2.5 rounded-sm bg-[#020704] border border-[#00ff66]/20 flex items-center justify-between"
+                        >
+                          <div className="flex items-center gap-2">
+                            <span className="px-1.5 py-0.5 rounded bg-[#00ff66]/10 text-[#00ff66] border border-[#00ff66]/30 text-[10px] font-tech font-bold">
+                              M{leg.matchNumber}
+                            </span>
+                            <span className="font-condensed font-bold text-sm sm:text-base text-white">
+                              {match.homeTeam} <strong className="text-[#00ff66]">{leg.homeScore}</strong> – <strong className="text-slate-200">{leg.awayScore}</strong> {match.awayTeam}
+                            </span>
+                          </div>
+                          {leg.note && (
+                            <span className="text-[10px] font-tech px-2 py-0.5 rounded bg-white/5 text-slate-300 font-bold">
+                              {leg.note}
+                            </span>
+                          )}
+                        </div>
+                      ))}
                     </div>
                   </div>
 
                   {/* Match Footer */}
                   <div className="mt-3 pt-2.5 border-t border-white/5 flex items-center justify-between text-[11px] font-tech text-slate-400">
                     <span className="text-[#00ff66]">
-                      Match {idx + 1}: Tehran Legacy 3 – 1 Banger (+3 PTS for TLG)
+                      {match.notes ?? 'Official 2-match series counted in standings table'}
                     </span>
                     <span className="text-slate-500">
                       {match.date}
@@ -232,19 +294,6 @@ export const MatchesSection: React.FC<MatchesSectionProps> = ({ onSelectTeamByNa
                   </div>
                 </div>
               ))}
-            </div>
-
-            {/* 2-Match Cumulative Aggregate Banner */}
-            <div className="mt-4 p-3.5 rounded-sm bg-[#07190f] border border-[#00ff66]/30 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs font-tech">
-              <div className="flex items-center gap-2 text-[#00ff66]">
-                <CheckCircle2 className="w-4 h-4" />
-                <span className="font-bold">
-                  2-MATCH SERIES COMPLETED: TEHRAN LEGACY 6 – 2 BANGER (AGGREGATE)
-                </span>
-              </div>
-              <span className="text-slate-300 font-bold">
-                Tehran Legacy: 2 Wins, 6 Points • Banger: 2 Losses, 0 Points
-              </span>
             </div>
           </div>
         )}
