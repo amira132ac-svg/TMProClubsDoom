@@ -25,9 +25,12 @@ export default function App() {
 
   // Find team by name and open modal
   const handleSelectTeamByName = (teamName: string) => {
-    const found = ALL_TEAMS.find(
-      (t) => t.name.toLowerCase() === teamName.toLowerCase()
-    );
+    const clean = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '');
+    const target = clean(teamName);
+    const found = ALL_TEAMS.find((t) => {
+      const teamClean = clean(t.name);
+      return teamClean === target || teamClean.includes(target) || target.includes(teamClean);
+    });
     if (found) {
       setSelectedTeam(found);
     }
