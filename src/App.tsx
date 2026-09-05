@@ -7,6 +7,7 @@ import { StandingsSection } from './components/StandingsSection';
 import { StatsSection } from './components/StatsSection';
 import { Footer } from './components/Footer';
 import { TeamModal } from './components/TeamModal';
+import { TournamentRadio } from './components/TournamentRadio';
 import { ALL_TEAMS } from './data/tournamentData';
 import { TournamentTeam } from './types';
 
@@ -119,6 +120,9 @@ export default function App() {
         team={selectedTeam}
         onClose={() => setSelectedTeam(null)}
       />
+
+      {/* 6. Floating Bottom-Right Radio Tm */}
+      <TournamentRadio />
 
     </div>
   );
