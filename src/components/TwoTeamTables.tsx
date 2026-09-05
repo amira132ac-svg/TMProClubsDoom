@@ -36,7 +36,7 @@ export const TwoTeamTables: React.FC<TwoTeamTablesProps> = ({ onSelectTeam }) =>
           </h2>
 
           <p className="font-condensed text-slate-300 text-base sm:text-lg tracking-wider">
-            16 Contenders divided across two battlegrounds. Click any squad to inspect verified 11v11 player rosters, stats and match history.
+            16 Contenders divided across League 1 & League 2. Click any squad to inspect verified 11v11 player rosters, stats and match history.
           </p>
         </div>
 
@@ -59,7 +59,7 @@ export const TwoTeamTables: React.FC<TwoTeamTablesProps> = ({ onSelectTeam }) =>
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] items-center gap-8 lg:gap-8 xl:gap-10">
           
           {/* ======================================================== */}
-          {/* LEFT PANEL: FINALISTS / GROUP A                          */}
+          {/* LEFT PANEL: LEAGUE 1 / لیگ یک                            */}
           {/* ======================================================== */}
           <div className="w-full">
             <div className="panel-doomsday panel-corner-accents rounded-sm p-5 sm:p-7 relative overflow-hidden">
@@ -69,7 +69,7 @@ export const TwoTeamTables: React.FC<TwoTeamTablesProps> = ({ onSelectTeam }) =>
                 <div className="flex items-center gap-2.5">
                   <div className="diamond-marker" />
                   <h3 className="font-esports font-black text-2xl sm:text-3xl tracking-widest text-white uppercase">
-                    FINALISTS / GROUP A
+                    LEAGUE 1 • لیگ یک
                   </h3>
                 </div>
                 <span className="text-[11px] font-tech text-[#00ff66] tracking-widest uppercase px-2.5 py-1 rounded-sm bg-[#07190f] border border-[#00ff66]/30 font-bold">
@@ -173,7 +173,7 @@ export const TwoTeamTables: React.FC<TwoTeamTablesProps> = ({ onSelectTeam }) =>
           </div>
 
           {/* ======================================================== */}
-          {/* RIGHT PANEL: FINALISTS / GROUP B                         */}
+          {/* RIGHT PANEL: LEAGUE 2 / لیگ دو                           */}
           {/* ======================================================== */}
           <div className="w-full">
             <div className="panel-doomsday panel-corner-accents rounded-sm p-5 sm:p-7 relative overflow-hidden">
@@ -183,7 +183,7 @@ export const TwoTeamTables: React.FC<TwoTeamTablesProps> = ({ onSelectTeam }) =>
                 <div className="flex items-center gap-2.5">
                   <div className="diamond-marker" />
                   <h3 className="font-esports font-black text-2xl sm:text-3xl tracking-widest text-white uppercase">
-                    FINALISTS / GROUP B
+                    LEAGUE 2 • لیگ دو
                   </h3>
                 </div>
                 <span className="text-[11px] font-tech text-[#00ff66] tracking-widest uppercase px-2.5 py-1 rounded-sm bg-[#07190f] border border-[#00ff66]/30 font-bold">

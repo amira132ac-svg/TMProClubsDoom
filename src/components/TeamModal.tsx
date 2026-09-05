@@ -29,7 +29,7 @@ export const TeamModal: React.FC<TeamModalProps> = ({ team, onClose }) => {
             </div>
             <div>
               <span className="text-[10px] font-tech text-[#00ff66] tracking-[0.25em] uppercase block">
-                GROUP {team.group} • SEED #{team.seed}
+                LEAGUE {team.group === 'A' ? '1' : '2'} • SEED #{team.seed}
               </span>
               <h3 className="font-esports font-black text-2xl sm:text-3xl text-white tracking-wider leading-none">
                 {team.name}
@@ -80,7 +80,7 @@ export const TeamModal: React.FC<TeamModalProps> = ({ team, onClose }) => {
               <span className="text-[10px] font-tech text-slate-400 uppercase tracking-widest block">SEED & DIVISION</span>
               <span className="font-condensed font-bold text-lg text-white flex items-center gap-2">
                 <Shield className="w-4 h-4 text-[#00ff66]" />
-                GROUP {team.group} • SEED #{team.seed}
+                LEAGUE {team.group === 'A' ? '1' : '2'} • SEED #{team.seed}
               </span>
             </div>
 

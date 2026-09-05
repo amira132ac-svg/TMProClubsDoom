@@ -206,7 +206,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         <p className="font-condensed text-base sm:text-xl md:text-2xl text-slate-300 max-w-2xl mx-auto mb-10 leading-snug tracking-wide">
           The Premier 11v11 Apocalyptic Esports Arena. 16 Elite Squads. One Final Crown.
           <span className="block mt-1 text-[#00ff66] font-bold tracking-widest text-sm sm:text-base font-tech">
-            7,000,000 TOMANS PRIZE POOL • MIDDLE EAST CHAMPIONSHIP
+            ELITE 11v11 EA FC PRO CLUBS • LEAGUE 1 & LEAGUE 2
           </span>
         </p>
 
@@ -258,11 +258,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               </span>
             </div>
             <div className="bg-[#050b08] p-2.5 rounded-sm border border-white/5">
-              <span className="font-esports font-black text-2xl text-white block leading-none">
+              <span className="font-esports font-black text-2xl text-white block leading-none text-white">
                 2
               </span>
               <span className="text-[10px] font-tech font-bold text-slate-400 tracking-wider uppercase">
-                GROUPS
+                LEAGUES
               </span>
             </div>
             <div className="bg-[#050b08] p-2.5 rounded-sm border border-white/5">
@@ -275,10 +275,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </div>
             <div className="bg-[#050b08] p-2.5 rounded-sm border border-white/5">
               <span className="font-esports font-black text-2xl text-white block leading-none text-[#00ff66]">
-                7M
+                11v11
               </span>
               <span className="text-[10px] font-tech font-bold text-slate-400 tracking-wider uppercase">
-                TOMANS
+                FORMAT
               </span>
             </div>
           </div>

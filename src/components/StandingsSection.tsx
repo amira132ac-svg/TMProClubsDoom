@@ -31,7 +31,7 @@ export const StandingsSection: React.FC<StandingsSectionProps> = ({ onSelectTeam
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-sm bg-[#05140b] border border-[#00ff66]/40 text-[#00ff66] text-xs font-tech font-bold tracking-[0.25em] uppercase mb-3">
               <Trophy className="w-3.5 h-3.5 text-[#00ff66]" />
-              <span>GROUP STAGE TABLE</span>
+              <span>LEAGUE TABLE • جدول لیگ</span>
             </div>
             <h2 className="font-esports font-black text-4xl sm:text-6xl uppercase text-metallic-title tracking-tight leading-none">
               DOOMSDAY STANDINGS
@@ -49,7 +49,7 @@ export const StandingsSection: React.FC<StandingsSectionProps> = ({ onSelectTeam
                   : 'text-slate-400 hover:text-white'
               }`}
             >
-              GROUP A
+              LEAGUE 1 • لیگ ۱
             </button>
             <button
               type="button"
@@ -60,7 +60,7 @@ export const StandingsSection: React.FC<StandingsSectionProps> = ({ onSelectTeam
                   : 'text-slate-400 hover:text-white'
               }`}
             >
-              GROUP B
+              LEAGUE 2 • لیگ ۲
             </button>
           </div>
         </div>

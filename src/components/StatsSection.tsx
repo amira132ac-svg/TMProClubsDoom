@@ -110,7 +110,7 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onSelectTeamByName }
               16 <span className="text-xs font-tech text-slate-400 font-normal">TEAMS IN RACE</span>
             </div>
             <div className="text-[11px] font-tech text-slate-400 mt-1">
-              Group A: <span className="text-white font-bold">8</span> • Group B: <span className="text-white font-bold">8</span>
+              League 1: <span className="text-white font-bold">8</span> • League 2: <span className="text-white font-bold">8</span>
             </div>
           </div>
 
@@ -178,9 +178,9 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onSelectTeamByName }
             </button>
           </div>
 
-          {/* Group Filter */}
+          {/* League Filter */}
           <div className="flex items-center gap-1.5 self-end sm:self-auto text-xs font-tech">
-            <span className="text-slate-500 mr-1 uppercase">GROUP:</span>
+            <span className="text-slate-500 mr-1 uppercase">LEAGUE:</span>
             {(['ALL', 'A', 'B'] as const).map((grp) => (
               <button
                 key={grp}
@@ -192,7 +192,7 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onSelectTeamByName }
                     : 'bg-[#050a07] border-white/10 text-slate-400 hover:text-white'
                 }`}
               >
-                {grp === 'ALL' ? 'ALL GROUPS' : `GROUP ${grp}`}
+                {grp === 'ALL' ? 'ALL LEAGUES' : grp === 'A' ? 'LEAGUE 1' : 'LEAGUE 2'}
               </button>
             ))}
           </div>
@@ -253,7 +253,7 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onSelectTeamByName }
                     {/* Club */}
                     <td className="py-3.5 px-4">
                       <span className="text-xs font-tech text-slate-400">
-                        {selectedGroup === 'B' ? 'GROUP B CLUBS' : selectedGroup === 'A' ? 'GROUP A CLUBS' : '16 TOURNAMENT CLUBS'}
+                        {selectedGroup === 'B' ? 'LEAGUE 2 CLUBS' : selectedGroup === 'A' ? 'LEAGUE 1 CLUBS' : '16 TOURNAMENT CLUBS'}
                       </span>
                     </td>
 

@@ -86,7 +86,7 @@ export default function App() {
           onViewMatches={() => handleNavigate('matches')}
         />
 
-        {/* MAIN FEATURE: TWO TEAM TABLES (GROUP A | TM BRUSH LOGO | GROUP B) */}
+        {/* MAIN FEATURE: TWO TEAM TABLES (LEAGUE 1 | TM BRUSH LOGO | LEAGUE 2) */}
         <TwoTeamTables
           onSelectTeam={(team) => setSelectedTeam(team)}
         />

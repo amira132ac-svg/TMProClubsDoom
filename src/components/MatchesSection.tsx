@@ -70,12 +70,12 @@ export const MatchesSection: React.FC<MatchesSectionProps> = ({ onSelectTeamByNa
               <span className="font-condensed font-bold text-sm sm:text-base text-[#00ff66]">16 SQUADS</span>
             </div>
             <div className="bg-[#050e08] p-3 rounded-sm border border-white/5">
-              <span className="text-[10px] font-tech text-slate-400 uppercase block">GROUPS</span>
-              <span className="font-condensed font-bold text-sm sm:text-base text-white">GROUP A & B</span>
+              <span className="text-[10px] font-tech text-slate-400 uppercase block">LEAGUES</span>
+              <span className="font-condensed font-bold text-sm sm:text-base text-white">LEAGUE 1 & 2</span>
             </div>
             <div className="bg-[#050e08] p-3 rounded-sm border border-white/5">
-              <span className="text-[10px] font-tech text-slate-400 uppercase block">PRIZE POOL</span>
-              <span className="font-condensed font-bold text-sm sm:text-base text-[#00ff66]">7,000,000 T</span>
+              <span className="text-[10px] font-tech text-slate-400 uppercase block">STATUS</span>
+              <span className="font-condensed font-bold text-sm sm:text-base text-[#00ff66]">PRE-SEASON</span>
             </div>
           </div>
 

@@ -41,9 +41,9 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             </p>
 
             <div className="flex items-center gap-3 pt-2">
-              <span className="text-xs font-tech text-slate-500">PRIZE POOL:</span>
+              <span className="text-xs font-tech text-slate-500">FORMAT:</span>
               <span className="text-xs font-tech text-[#00ff66] font-bold px-2 py-0.5 rounded bg-[#00ff66]/10 border border-[#00ff66]/30">
-                7,000,000 TOMANS
+                11v11 EA FC COMPETITIVE
               </span>
             </div>
           </div>
@@ -69,7 +69,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   onClick={() => onNavigate('teams')}
                   className="hover:text-[#00ff66] transition-colors cursor-pointer"
                 >
-                  Finalists (Group A & B)
+                  League 1 & League 2 Squads
                 </button>
               </li>
               <li>
@@ -87,7 +87,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   onClick={() => onNavigate('standings')}
                   className="hover:text-[#00ff66] transition-colors cursor-pointer"
                 >
-                  Group Stage Standings
+                  League Table Standings
                 </button>
               </li>
               <li>
