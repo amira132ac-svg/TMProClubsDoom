@@ -65,14 +65,14 @@ export const StandingsSection: React.FC<StandingsSectionProps> = ({ onSelectTeam
           </div>
         </div>
 
-        {/* Best-of-3 Series Standings Rule Notice */}
+        {/* 2-Match Fixture Standings Rule Notice */}
         <div className="mb-4 px-4 py-3 rounded-sm bg-[#05110a] border border-[#00ff66]/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs font-tech text-slate-300">
           <span className="flex items-center gap-2 text-[#00ff66] font-bold">
             <Shield className="w-4 h-4 text-[#00ff66]" />
-            BEST-OF-3 FORMAT: EACH COMPLETED BO3 SERIES COUNTS AS 1 SERIES RESULT IN STANDINGS
+            2-MATCH FIXTURE FORMAT: 3 POINTS PER WIN (UP TO 6 PTS TOTAL)
           </span>
           <span className="text-slate-400">
-            Series Win = +3 PTS • Both match scores recorded into Goals For / Against
+            Win = 3 PTS • Draw = 1 PTS • Loss = 0 PTS
           </span>
         </div>
 
@@ -85,10 +85,10 @@ export const StandingsSection: React.FC<StandingsSectionProps> = ({ onSelectTeam
                 <tr className="border-b border-white/10 bg-[#040806] text-[11px] font-tech font-bold text-[#00ff66] uppercase tracking-widest">
                   <th className="py-4 px-4 sm:px-6 w-16 text-center">#</th>
                   <th className="py-4 px-4 sm:px-6">TEAM</th>
-                  <th className="py-4 px-3 text-center" title="Series Played">P</th>
-                  <th className="py-4 px-3 text-center" title="Series Won">W</th>
-                  <th className="py-4 px-3 text-center" title="Series Drawn">D</th>
-                  <th className="py-4 px-3 text-center" title="Series Lost">L</th>
+                  <th className="py-4 px-3 text-center" title="Matches Played">P</th>
+                  <th className="py-4 px-3 text-center" title="Matches Won">W</th>
+                  <th className="py-4 px-3 text-center" title="Matches Drawn">D</th>
+                  <th className="py-4 px-3 text-center" title="Matches Lost">L</th>
                   <th className="py-4 px-3 text-center hidden sm:table-cell" title="Goals For">GF</th>
                   <th className="py-4 px-3 text-center hidden sm:table-cell" title="Goals Against">GA</th>
                   <th className="py-4 px-4 text-center" title="Goal Difference">GD</th>
@@ -147,7 +147,7 @@ export const StandingsSection: React.FC<StandingsSectionProps> = ({ onSelectTeam
                             </span>
                             {team.played > 0 && (
                               <span className="text-[10px] font-tech text-[#00ff66] font-bold">
-                                1 BO3 SERIES COMPLETED
+                                {team.played} MATCHES PLAYED • {team.points} PTS
                               </span>
                             )}
                           </div>
@@ -229,7 +229,7 @@ export const StandingsSection: React.FC<StandingsSectionProps> = ({ onSelectTeam
             </div>
 
             <span className="text-slate-500">
-              CRITERIA: POINTS &gt; GOAL DIFFERENCE &gt; GOALS FOR • BO3 SERIES COUNTED AS 1 MATCH
+              CRITERIA: POINTS &gt; GOAL DIFFERENCE &gt; GOALS FOR
             </span>
           </div>
 

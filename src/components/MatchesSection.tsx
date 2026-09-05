@@ -111,169 +111,140 @@ export const MatchesSection: React.FC<MatchesSectionProps> = ({ onSelectTeamByNa
           <div className="flex items-center gap-2.5 text-[#00ff66]">
             <Shield className="w-4 h-4 shrink-0" />
             <span className="font-bold tracking-wider">
-              ALL FIXTURES ARE OFFICIAL BEST-OF-3 (BO3) SERIES • WINNER OF 2 GAMES TAKES THE SERIES (+3 PTS)
+              ALL FIXTURES ARE 2-MATCH SERIES • 3 POINTS PER WIN (UP TO 6 PTS TOTAL) • 1 POINT PER DRAW
             </span>
           </div>
           <span className="text-slate-400">
-            Series scores count as ONE result in the official standings table.
+            Each match counts as an individual official game in the standings table.
           </span>
         </div>
 
         {/* ======================================================== */}
-        {/* COMPLETED BEST-OF-3 RESULTS SECTION                       */}
+        {/* COMPLETED RESULTS SECTION (BOTH MATCHES DISPLAYED)        */}
         {/* ======================================================== */}
         {showResults && completedMatches.length > 0 && (
           <div className="mb-14">
-            <div className="flex items-center gap-2 mb-4">
-              <span className="w-2 h-2 bg-[#00ff66] rounded-full animate-pulse shadow-[0_0_8px_#00ff66]" />
-              <h3 className="font-esports font-bold text-lg sm:text-xl text-white tracking-widest uppercase">
-                COMPLETED BEST-OF-3 SERIES RESULTS
-              </h3>
+            <div className="flex items-center justify-between gap-2 mb-4">
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 bg-[#00ff66] rounded-full animate-pulse shadow-[0_0_8px_#00ff66]" />
+                <h3 className="font-esports font-bold text-lg sm:text-xl text-white tracking-widest uppercase">
+                  COMPLETED MATCH RESULTS ({completedMatches.length})
+                </h3>
+              </div>
+              <span className="text-xs font-tech text-[#00ff66] font-bold">
+                TEHRAN LEGACY: 2 WINS • 6 PTS
+              </span>
             </div>
 
-            <div className="space-y-4">
-              {completedMatches.map((match) => (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {completedMatches.map((match, idx) => (
                 <div
                   key={match.id}
-                  className="panel-doomsday panel-corner-accents rounded-sm p-5 sm:p-7 border border-[#00ff66]/40 relative overflow-hidden shadow-2xl bg-gradient-to-r from-[#040c07] via-[#05130b] to-[#040c07]"
+                  className="panel-doomsday panel-corner-accents rounded-sm p-5 sm:p-6 border border-[#00ff66]/40 relative overflow-hidden shadow-2xl bg-gradient-to-r from-[#040c07] via-[#05130b] to-[#040c07]"
                 >
                   {/* Card Top Meta */}
-                  <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-3 mb-4 text-xs font-tech">
+                  <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-3 mb-4 text-xs font-tech">
                     <div className="flex items-center gap-2">
                       <span className="px-2.5 py-0.5 rounded-sm bg-[#00ff66]/10 text-[#00ff66] border border-[#00ff66]/30 font-bold uppercase tracking-wider">
                         {match.league ?? 'LEAGUE 1'}
                       </span>
                       <span className="px-2 py-0.5 rounded-sm bg-white/5 text-slate-300 border border-white/10 font-bold">
-                        BEST-OF-3 SERIES (BO3)
+                        MATCH {idx + 1} OF 2
                       </span>
                       <span className="text-slate-400 hidden sm:inline">
                         • {match.arena}
                       </span>
                     </div>
 
-                    <div className="flex items-center gap-2 text-xs font-bold text-[#00ff66]">
+                    <div className="flex items-center gap-1.5 text-xs font-bold text-[#00ff66]">
                       <CheckCircle2 className="w-4 h-4 text-[#00ff66]" />
-                      <span>SERIES FINAL: {match.homeTeam} (2 – 0)</span>
+                      <span>FT: {match.homeTeam} WIN (+3 PTS)</span>
                     </div>
                   </div>
 
-                  {/* Main Head-to-Head Series Row */}
-                  <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] items-center gap-6 py-2">
-                    {/* Home Team (Winner) */}
+                  {/* Main Head-to-Head Row */}
+                  <div className="flex items-center justify-between gap-3 py-2">
+                    {/* Home Team */}
                     <div
                       onClick={() => handleTeamClick(match.homeTeam)}
-                      className="flex items-center gap-4 cursor-pointer group text-left"
+                      className="flex-1 text-left cursor-pointer group/team"
                     >
-                      <div className="w-12 h-12 rounded-sm bg-[#071f11] border-2 border-[#00ff66] flex items-center justify-center font-esports font-black text-xl text-[#00ff66] shadow-[0_0_15px_rgba(0,255,102,0.3)] shrink-0 group-hover:scale-105 transition-transform">
-                        TLG
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-10 h-10 rounded-sm bg-[#071f11] border border-[#00ff66] flex items-center justify-center font-esports font-bold text-base text-[#00ff66] shrink-0">
+                          TLG
+                        </div>
+                        <div>
+                          <span className="text-[10px] font-tech text-[#00ff66] font-bold block">
+                            WINNER (+3 PTS)
+                          </span>
+                          <h4 className="font-esports font-bold text-base sm:text-lg text-white group-hover/team:text-[#00ff66] transition-colors">
+                            {match.homeTeam}
+                          </h4>
+                        </div>
                       </div>
-                      <div>
-                        <span className="text-[10px] font-tech text-[#00ff66] uppercase tracking-widest font-bold block">
-                          SERIES WINNER (+3 PTS)
+                    </div>
+
+                    {/* Score Center */}
+                    <div className="flex flex-col items-center justify-center px-4 py-1.5 bg-[#030805] rounded-sm border border-white/10 shrink-0">
+                      <span className="text-[9px] font-tech font-bold text-slate-400 uppercase tracking-widest mb-0.5">
+                        FINAL SCORE
+                      </span>
+                      <div className="flex items-center gap-2.5">
+                        <span className="font-esports font-black text-2xl sm:text-3xl text-[#00ff66]">
+                          {match.homeScore ?? 3}
                         </span>
-                        <h4 className="font-esports font-black text-xl sm:text-2xl text-white tracking-wider group-hover:text-[#00ff66] transition-colors">
-                          {match.homeTeam}
-                        </h4>
-                        <span className="text-xs font-tech text-slate-400">
-                          Total Goals: <strong className="text-white">6</strong> (+4 GD)
+                        <span className="text-slate-600 font-tech text-base font-bold">—</span>
+                        <span className="font-esports font-black text-2xl sm:text-3xl text-slate-300">
+                          {match.awayScore ?? 1}
                         </span>
                       </div>
                     </div>
 
-                    {/* Series Center Score Display */}
-                    <div className="flex flex-col items-center justify-center px-6 py-2 bg-[#030805] rounded-sm border border-white/10 shrink-0">
-                      <span className="text-[10px] font-tech font-bold text-[#00ff66] uppercase tracking-[0.2em] mb-1">
-                        SERIES SCORE
-                      </span>
-                      <div className="flex items-center gap-3">
-                        <span className="font-esports font-black text-3xl sm:text-4xl text-[#00ff66]">
-                          {match.seriesScore?.homeWins ?? 2}
-                        </span>
-                        <span className="text-slate-600 font-tech text-lg font-bold">—</span>
-                        <span className="font-esports font-black text-3xl sm:text-4xl text-slate-400">
-                          {match.seriesScore?.awayWins ?? 0}
-                        </span>
-                      </div>
-                      <span className="text-[10px] font-tech text-slate-400 uppercase tracking-widest mt-1">
-                        BO3 COMPLETED
-                      </span>
-                    </div>
-
-                    {/* Away Team (Banger) */}
+                    {/* Away Team */}
                     <div
                       onClick={() => handleTeamClick(match.awayTeam)}
-                      className="flex items-center justify-end gap-4 cursor-pointer group text-right"
+                      className="flex-1 text-right cursor-pointer group/team"
                     >
-                      <div>
-                        <span className="text-[10px] font-tech text-slate-500 uppercase tracking-widest font-bold block">
-                          SERIES RUNNER-UP (0 PTS)
-                        </span>
-                        <h4 className="font-esports font-black text-xl sm:text-2xl text-white tracking-wider group-hover:text-[#00ff66] transition-colors">
-                          {match.awayTeam}
-                        </h4>
-                        <span className="text-xs font-tech text-slate-400">
-                          Total Goals: <strong className="text-white">2</strong> (-4 GD)
-                        </span>
-                      </div>
-                      <div className="w-12 h-12 rounded-sm bg-[#120808] border-2 border-red-900/60 flex items-center justify-center font-esports font-black text-xl text-slate-300 shrink-0 group-hover:scale-105 transition-transform">
-                        BNG
+                      <div className="flex items-center justify-end gap-2.5">
+                        <div>
+                          <span className="text-[10px] font-tech text-slate-500 font-bold block">
+                            0 PTS
+                          </span>
+                          <h4 className="font-esports font-bold text-base sm:text-lg text-white group-hover/team:text-[#00ff66] transition-colors">
+                            {match.awayTeam}
+                          </h4>
+                        </div>
+                        <div className="w-10 h-10 rounded-sm bg-[#120808] border border-red-900/40 flex items-center justify-center font-esports font-bold text-base text-slate-300 shrink-0">
+                          BNG
+                        </div>
                       </div>
                     </div>
                   </div>
 
-                  {/* Individual Game Scores (Explicitly Required to remain visible in Results) */}
-                  <div className="mt-5 pt-4 border-t border-white/10">
-                    <div className="flex items-center justify-between text-xs font-tech text-slate-400 mb-2.5">
-                      <span className="uppercase font-bold tracking-wider flex items-center gap-1.5 text-white">
-                        <Layers className="w-3.5 h-3.5 text-[#00ff66]" />
-                        INDIVIDUAL MATCH BREAKDOWN (BOTH MATCH SCORES)
-                      </span>
-                      <span className="text-[11px] text-[#00ff66] font-bold">
-                        COUNTED AS 1 SERIES IN STANDINGS
-                      </span>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {/* Game 1 */}
-                      <div className="p-3 rounded-sm bg-[#020704] border border-[#00ff66]/30 flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <span className="w-5 h-5 rounded-full bg-[#00ff66]/10 text-[#00ff66] border border-[#00ff66]/30 flex items-center justify-center text-[10px] font-tech font-bold">
-                            G1
-                          </span>
-                          <span className="font-condensed font-bold text-sm sm:text-base text-white">
-                            Tehran Legacy <span className="text-[#00ff66]">3</span> – <span className="text-slate-300">1</span> Banger
-                          </span>
-                        </div>
-                        <span className="text-[10px] font-tech px-2 py-0.5 rounded bg-white/5 text-slate-400 font-bold uppercase">
-                          MATCH 1 (FT)
-                        </span>
-                      </div>
-
-                      {/* Game 2 */}
-                      <div className="p-3 rounded-sm bg-[#020704] border border-[#00ff66]/30 flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <span className="w-5 h-5 rounded-full bg-[#00ff66]/10 text-[#00ff66] border border-[#00ff66]/30 flex items-center justify-center text-[10px] font-tech font-bold">
-                            G2
-                          </span>
-                          <span className="font-condensed font-bold text-sm sm:text-base text-white">
-                            Tehran Legacy <span className="text-[#00ff66]">3</span> – <span className="text-slate-300">1</span> Banger
-                          </span>
-                        </div>
-                        <span className="text-[10px] font-tech px-2 py-0.5 rounded bg-white/5 text-slate-400 font-bold uppercase">
-                          MATCH 2 (FT)
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Official Standings Rule Callout */}
-                    <div className="mt-3 p-2.5 rounded-sm bg-[#07130b] border border-white/5 text-[11px] font-tech text-slate-300 flex items-center justify-between">
-                      <span>
-                        <strong className="text-[#00ff66]">Standings Rule Applied:</strong> Both matches recorded as <strong>ONE completed series</strong>. Tehran Legacy: +1 Win, 6 GF, 2 GA, +4 GD, +3 PTS. Banger: +1 Loss, 2 GF, 6 GA, -4 GD, 0 PTS.
-                      </span>
-                    </div>
+                  {/* Match Footer */}
+                  <div className="mt-3 pt-2.5 border-t border-white/5 flex items-center justify-between text-[11px] font-tech text-slate-400">
+                    <span className="text-[#00ff66]">
+                      Match {idx + 1}: Tehran Legacy 3 – 1 Banger (+3 PTS for TLG)
+                    </span>
+                    <span className="text-slate-500">
+                      {match.date}
+                    </span>
                   </div>
                 </div>
               ))}
+            </div>
+
+            {/* 2-Match Cumulative Aggregate Banner */}
+            <div className="mt-4 p-3.5 rounded-sm bg-[#07190f] border border-[#00ff66]/30 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs font-tech">
+              <div className="flex items-center gap-2 text-[#00ff66]">
+                <CheckCircle2 className="w-4 h-4" />
+                <span className="font-bold">
+                  2-MATCH SERIES COMPLETED: TEHRAN LEGACY 6 – 2 BANGER (AGGREGATE)
+                </span>
+              </div>
+              <span className="text-slate-300 font-bold">
+                Tehran Legacy: 2 Wins, 6 Points • Banger: 2 Losses, 0 Points
+              </span>
             </div>
           </div>
         )}
@@ -353,7 +324,7 @@ export const MatchesSection: React.FC<MatchesSectionProps> = ({ onSelectTeamByNa
                           VS
                         </span>
                         <span className="text-[9px] font-tech font-bold text-[#00ff66] uppercase tracking-wider mt-1">
-                          BO3
+                          2 MATCHES
                         </span>
                       </div>
 
@@ -376,7 +347,7 @@ export const MatchesSection: React.FC<MatchesSectionProps> = ({ onSelectTeamByNa
                     <div className="mt-3 pt-2.5 border-t border-white/5 flex items-center justify-between text-[11px] font-tech text-slate-400">
                       <span className="flex items-center gap-1.5">
                         <Flame className="w-3 h-3 text-[#00ff66]" />
-                        <span>Best-of-3 Series</span>
+                        <span>2-Match Fixture</span>
                       </span>
                       <span className="text-slate-500">
                         {fixture.arena}
