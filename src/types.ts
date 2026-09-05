@@ -32,6 +32,13 @@ export interface TournamentTeam {
   }[];
 }
 
+export interface BestOfThreeGame {
+  gameNumber: number;
+  homeScore: number;
+  awayScore: number;
+  status: 'FINISHED' | 'UPCOMING' | 'NOT_NEEDED';
+}
+
 export interface TournamentMatch {
   id: string;
   homeTeam: string;
@@ -40,12 +47,19 @@ export interface TournamentMatch {
   awayScore?: number;
   status: 'LIVE' | 'UPCOMING' | 'FINISHED';
   group: 'A' | 'B' | 'PLAYOFF' | 'SUPERCUP';
+  league?: 'LEAGUE 1' | 'LEAGUE 2';
   stage: string;
+  day?: string;
   date: string;
   time: string;
+  timestamp?: number;
   minute?: string;
   arena: string;
   broadcastLive?: boolean;
+  format?: 'BO3' | 'SINGLE';
+  seriesScore?: { homeWins: number; awayWins: number };
+  games?: BestOfThreeGame[];
+  notes?: string;
 }
 
 export interface TournamentNews {

@@ -83,15 +83,15 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onSelectTeamByName }
                 <Activity className="w-3.5 h-3.5 text-[#00ff66]" />
                 TOTAL GOALS
               </span>
-              <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#00ff66]/10 text-[#00ff66]">
-                PRE-SEASON
+              <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#00ff66]/10 text-[#00ff66] font-bold">
+                LEAGUE 1 ACTIVE
               </span>
             </div>
             <div className="font-esports font-black text-2xl sm:text-3xl text-white tracking-wide">
-              0 <span className="text-xs font-tech text-slate-400 font-normal">GOALS RECORDED</span>
+              8 <span className="text-xs font-tech text-[#00ff66] font-bold">GOALS SCORED</span>
             </div>
             <div className="text-[11px] font-tech text-slate-400 mt-1">
-              Matches Played: <span className="text-white font-bold">0</span>
+              Series Played: <span className="text-white font-bold">1 BO3 (2 Games)</span>
             </div>
           </div>
 
@@ -124,13 +124,13 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onSelectTeamByName }
             </div>
             <div>
               <h4 className="font-condensed font-bold text-base text-white tracking-wide flex items-center gap-2">
-                OFFICIAL STATS RECORDING
-                <span className="text-[10px] font-tech px-2 py-0.5 rounded bg-yellow-400/10 text-yellow-400 border border-yellow-400/30">
-                  AWAITING TOURNAMENT KICKOFF
+                PLAYER SCORECARD SUBMISSIONS
+                <span className="text-[10px] font-tech px-2 py-0.5 rounded bg-[#00ff66]/10 text-[#00ff66] border border-[#00ff66]/30 font-bold">
+                  PENDING VERIFICATION
                 </span>
               </h4>
               <p className="text-xs sm:text-sm text-slate-300 font-sans mt-0.5 leading-relaxed">
-                Individual player goals and assists will be updated live as official match scorecards are submitted by tournament directors.
+                Individual player scorers and assisters for Tehran Legacy vs Banger (8 total goals) and upcoming fixtures will be published immediately upon tournament director verification.
               </p>
             </div>
           </div>
