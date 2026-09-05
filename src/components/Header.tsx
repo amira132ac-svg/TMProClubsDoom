@@ -26,10 +26,10 @@ export const Header: React.FC<HeaderProps> = ({
 
   const navItems = [
     { id: 'home', label: 'HOME' },
-    { id: 'teams', label: 'TEAMS' },
-    { id: 'matches', label: 'MATCHES' },
     { id: 'standings', label: 'STANDINGS' },
+    { id: 'matches', label: 'MATCHES' },
     { id: 'stats', label: 'STATS' },
+    { id: 'teams', label: 'TEAMS' },
   ];
 
   const handleItemClick = (id: string) => {

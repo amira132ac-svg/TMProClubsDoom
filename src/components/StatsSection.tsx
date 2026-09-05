@@ -88,10 +88,10 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onSelectTeamByName }
               </span>
             </div>
             <div className="font-esports font-black text-2xl sm:text-3xl text-white tracking-wide">
-              11 <span className="text-xs font-tech text-[#00ff66] font-bold">GOALS SCORED</span>
+              20 <span className="text-xs font-tech text-[#00ff66] font-bold">GOALS SCORED</span>
             </div>
             <div className="text-[11px] font-tech text-slate-400 mt-1">
-              Matches Played: <span className="text-white font-bold">4 Matches (2 Fixtures)</span>
+              Matches Played: <span className="text-white font-bold">6 Matches (3 Fixtures)</span>
             </div>
           </div>
 

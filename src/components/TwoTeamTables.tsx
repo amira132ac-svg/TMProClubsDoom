@@ -12,7 +12,7 @@ export const TwoTeamTables: React.FC<TwoTeamTablesProps> = ({ onSelectTeam }) =>
   const [hoveredTeamId, setHoveredTeamId] = useState<string | null>(null);
 
   return (
-    <section id="teams" className="py-20 sm:py-24 relative overflow-hidden bg-[#030504]">
+    <section id="teams" className="py-14 sm:py-16 border-t border-white/5 relative overflow-hidden bg-[#030504]">
       {/* Background Ambience & Scratches */}
       <div className="absolute inset-0 pointer-events-none -z-10">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[600px] bg-radial-doom opacity-40 blur-3xl" />
@@ -21,22 +21,19 @@ export const TwoTeamTables: React.FC<TwoTeamTablesProps> = ({ onSelectTeam }) =>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Section Header as explicitly required:
-            "Create a large central section titled:
-             DOOMSDAY — FINAL CROWN"
-        */}
-        <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-16">
+        {/* Section Header */}
+        <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-sm bg-[#05140b] border border-[#00ff66]/40 text-[#00ff66] text-xs font-tech font-bold tracking-[0.25em] uppercase mb-3 shadow-[0_0_15px_rgba(0,255,102,0.15)]">
             <Shield className="w-3.5 h-3.5 text-[#00ff66]" />
-            <span>OFFICIAL TOURNAMENT ROSTER BOARD</span>
+            <span>OFFICIAL TOURNAMENT DIVISION BOARD</span>
           </div>
 
-          <h2 className="font-esports font-black text-4xl sm:text-6xl md:text-7xl uppercase text-metallic-title tracking-tight leading-none mb-3">
+          <h2 className="font-esports font-black text-3xl sm:text-5xl uppercase text-metallic-title tracking-tight leading-none mb-3">
             DOOMSDAY — FINAL CROWN
           </h2>
 
-          <p className="font-condensed text-slate-300 text-base sm:text-lg tracking-wider">
-            16 Contenders divided across League 1 & League 2. Click any squad to inspect verified 11v11 player rosters, stats and match history.
+          <p className="font-condensed text-slate-300 text-sm sm:text-base tracking-wider">
+            16 Contenders divided across League 1 & League 2. Click any squad to inspect stats, form and match history.
           </p>
         </div>
 

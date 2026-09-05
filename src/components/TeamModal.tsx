@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Shield, Trophy, Users, Swords, Award, ChevronRight, Activity } from 'lucide-react';
+import { X, Shield, Activity } from 'lucide-react';
 import { TournamentTeam } from '../types';
 
 interface TeamModalProps {
@@ -113,52 +113,6 @@ export const TeamModal: React.FC<TeamModalProps> = ({ team, onClose }) => {
             </div>
           </div>
 
-          {/* 11v11 Registered Roster Status (Not yet registered as requested) */}
-          <div>
-            <div className="flex items-center justify-between mb-3 border-b border-white/10 pb-2">
-              <h4 className="font-condensed font-bold text-base text-slate-200 tracking-wider flex items-center gap-2">
-                <Users className="w-4 h-4 text-[#00ff66]" />
-                ROSTER REGISTRATION STATUS • وضعیت ثبت‌نام بازیکنان
-              </h4>
-              <span className="text-[11px] font-tech text-yellow-400/90 font-bold px-2 py-0.5 rounded bg-yellow-400/10 border border-yellow-400/30">
-                ثبت نشده • PENDING
-              </span>
-            </div>
-
-            <div className="p-5 rounded-sm bg-[#050a07] border border-white/10 relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-[#00ff66]/5 rounded-full blur-2xl pointer-events-none" />
-              
-              <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-sm bg-[#09170e] border border-[#00ff66]/30 flex items-center justify-center text-[#00ff66] shrink-0 mt-0.5">
-                  <Users className="w-5 h-5" />
-                </div>
-                <div className="space-y-2">
-                  <h5 className="font-condensed font-bold text-base sm:text-lg text-white">
-                    اسامی بازیکنان تیم {team.name} هنوز ثبت نشده است
-                  </h5>
-                  <p className="text-xs sm:text-sm text-slate-400 leading-relaxed font-sans">
-                    لیست نهایی ترکیب ۱۱ نفره، شماره پیراهن‌ها و نیمکت‌نشینان این تیم در مرحله بررسی و تایید نهایی توسط کادر برگزاری مسابقات TM PROCLUBS قرار دارد و به زودی پس از تکمیل ثبت‌نام در این بخش درج خواهد شد.
-                  </p>
-                  <div className="pt-2 flex flex-wrap items-center gap-3 text-xs font-tech text-slate-500">
-                    <span className="flex items-center gap-1.5 text-slate-400">
-                      <Shield className="w-3.5 h-3.5 text-[#00ff66]" />
-                      SQUAD SIZE: 11v11 COMPETITIVE
-                    </span>
-                    <span>•</span>
-                    <a
-                      href="https://t.me/TM_Proclubs"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[#00ff66] font-bold hover:underline flex items-center gap-1"
-                    >
-                      <span>کانال رسمی مسابقات: @TM_Proclubs</span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
           {/* Pre-season Fixture Notice when no matches have taken place */}
           {(!team.recentMatches || team.recentMatches.length === 0) && (
             <div className="p-4 rounded-sm bg-[#050e09] border border-white/5 flex items-center justify-between gap-3 text-xs font-tech">
@@ -217,7 +171,14 @@ export const TeamModal: React.FC<TeamModalProps> = ({ team, onClose }) => {
         {/* Footer info */}
         <div className="px-6 py-3 border-t border-white/10 bg-[#040806] flex items-center justify-between text-xs font-tech text-slate-400">
           <span>TM PROCLUBS DOOMSDAY DATABASE</span>
-          <span className="text-[#00ff66]">VERIFIED ROSTER</span>
+          <a
+            href="https://t.me/TM_Proclubs"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[#00ff66] hover:underline"
+          >
+            @TM_Proclubs
+          </a>
         </div>
       </div>
     </div>

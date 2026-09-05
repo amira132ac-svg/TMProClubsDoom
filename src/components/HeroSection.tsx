@@ -3,12 +3,12 @@ import { Shield, ChevronDown, Swords, Send, Trophy, Users } from 'lucide-react';
 import { TELEGRAM_CHANNEL_URL, TELEGRAM_CHANNEL_HANDLE } from '../data/tournamentData';
 
 interface HeroSectionProps {
-  onViewTeams: () => void;
+  onViewStandings: () => void;
   onViewMatches: () => void;
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({
-  onViewTeams,
+  onViewStandings,
   onViewMatches,
 }) => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -219,11 +219,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 w-full max-w-md mx-auto mb-12">
           <button
             type="button"
-            onClick={onViewTeams}
+            onClick={onViewStandings}
             className="w-full sm:w-auto flex-1 btn-metallic flex items-center justify-center gap-3 px-8 py-4 font-condensed font-bold text-lg text-white tracking-[0.2em] uppercase rounded-sm cursor-pointer group"
           >
-            <Shield className="w-5 h-5 text-[#00ff66] transition-transform group-hover:scale-110" />
-            <span>VIEW TEAMS</span>
+            <Trophy className="w-5 h-5 text-[#00ff66] transition-transform group-hover:scale-110" />
+            <span>VIEW STANDINGS</span>
           </button>
 
           <button
@@ -295,8 +295,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         </div>
 
         {/* Scroll Indicator */}
-        <div className="mt-10 flex flex-col items-center gap-1 text-slate-500 hover:text-[#00ff66] transition-colors cursor-pointer" onClick={onViewTeams}>
-          <span className="text-[10px] font-tech tracking-[0.3em] uppercase">EXPLORE ROSTERS</span>
+        <div className="mt-10 flex flex-col items-center gap-1 text-slate-500 hover:text-[#00ff66] transition-colors cursor-pointer" onClick={onViewStandings}>
+          <span className="text-[10px] font-tech tracking-[0.3em] uppercase">VIEW STANDINGS</span>
           <ChevronDown className="w-4 h-4 text-[#00ff66] animate-bounce" />
         </div>
 

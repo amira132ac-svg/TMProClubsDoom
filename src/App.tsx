@@ -35,7 +35,7 @@ export default function App() {
 
   // ScrollSpy to update active nav link
   useEffect(() => {
-    const sections = ['home', 'teams', 'matches', 'standings', 'stats'];
+    const sections = ['home', 'standings', 'matches', 'stats', 'teams'];
     const handleScroll = () => {
       const scrollPosition = window.scrollY + 200;
       for (const sectionId of sections) {
@@ -82,28 +82,28 @@ export default function App() {
         
         {/* HERO SECTION */}
         <HeroSection
-          onViewTeams={() => handleNavigate('teams')}
+          onViewStandings={() => handleNavigate('standings')}
           onViewMatches={() => handleNavigate('matches')}
         />
 
-        {/* MAIN FEATURE: TWO TEAM TABLES (LEAGUE 1 | TM BRUSH LOGO | LEAGUE 2) */}
-        <TwoTeamTables
-          onSelectTeam={(team) => setSelectedTeam(team)}
-        />
-
-        {/* DOOMSDAY MATCH CENTER */}
-        <MatchesSection
-          onSelectTeamByName={handleSelectTeamByName}
-        />
-
-        {/* STANDINGS TABLE */}
+        {/* STANDINGS TABLE (LEAGUE 1 & LEAGUE 2) */}
         <StandingsSection
           onSelectTeam={(team) => setSelectedTeam(team)}
+        />
+
+        {/* DOOMSDAY MATCH CENTER (FIXTURES & RESULTS) */}
+        <MatchesSection
+          onSelectTeamByName={handleSelectTeamByName}
         />
 
         {/* PLAYER STATS (GOALS & ASSISTS) */}
         <StatsSection
           onSelectTeamByName={handleSelectTeamByName}
+        />
+
+        {/* TOURNAMENT TEAMS & ROSTERS (AT THE VERY BOTTOM) */}
+        <TwoTeamTables
+          onSelectTeam={(team) => setSelectedTeam(team)}
         />
 
       </main>
