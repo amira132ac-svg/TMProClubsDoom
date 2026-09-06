@@ -49,7 +49,7 @@ export const MatchesSection: React.FC<MatchesSectionProps> = ({ onSelectTeamByNa
     if (n.includes('110')) return '110';
     if (n.includes('pars')) return 'PRS';
     if (n.includes('mess')) return 'MSH';
-    if (n.includes('viking')) return 'VIK';
+    if (n.includes('peaky') || n.includes('viking')) return 'PKB';
     if (n.includes('vafadar')) return 'VFD';
     if (n.includes('gorgali')) return 'GRG';
     if (n.includes('hangover')) return 'HNG';
