@@ -90,6 +90,7 @@ export interface PlayerStatItem {
   name: string;
   team: string;
   teamShortCode: string;
+  group?: 'A' | 'B';
   goals: number;
   assists: number;
   matchesPlayed: number;
