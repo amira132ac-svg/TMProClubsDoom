@@ -8,6 +8,9 @@ import {
   ChevronDown,
   ChevronUp,
   SkipForward,
+  Volume2,
+  Volume1,
+  VolumeX,
 } from 'lucide-react';
 
 export interface RadioTrack {
@@ -77,9 +80,6 @@ const RADIO_TRACKS: RadioTrack[] = [
   },
 ];
 
-// Fixed gentle background gain (~20% perceptual, sounds soft and comfortable)
-const DEFAULT_BACKGROUND_GAIN = 0.035; // gentle, non-intrusive background level
-
 // Fisher-Yates shuffle helper for true random radio sequence
 const shuffleIndices = (count: number, avoidIndex = -1): number[] => {
   const arr = Array.from({ length: count }, (_, i) => i);
@@ -87,7 +87,6 @@ const shuffleIndices = (count: number, avoidIndex = -1): number[] => {
     const j = Math.floor(Math.random() * (i + 1));
     [arr[i], arr[j]] = [arr[j], arr[i]];
   }
-  // Ensure the first item isn't immediately repeated if avoidIndex is given
   if (arr.length > 1 && arr[0] === avoidIndex) {
     const temp = arr[0];
     arr[0] = arr[arr.length - 1];
@@ -97,7 +96,6 @@ const shuffleIndices = (count: number, avoidIndex = -1): number[] => {
 };
 
 export const TournamentRadio: React.FC = () => {
-  // Shuffled playlist queue to feel 100% like a random radio broadcast
   const [queue, setQueue] = useState<number[]>(() => shuffleIndices(RADIO_TRACKS.length));
   const [queuePos, setQueuePos] = useState<number>(0);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
@@ -105,33 +103,32 @@ export const TournamentRadio: React.FC = () => {
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [duration, setDuration] = useState<number>(0);
 
+  // Sound Volume control (audible, clear default 50% for PC)
+  const [volume, setVolume] = useState<number>(0.55);
+  const [isMuted, setIsMuted] = useState<boolean>(false);
+
   // Popup card expanded or compact pill
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const isFirstMount = useRef<boolean>(true);
 
   // Current track index in the randomized queue
   const currentTrackIndex = queue[queuePos] ?? 0;
-  const currentTrack = RADIO_TRACKS[currentTrackIndex];
+  const currentTrack = RADIO_TRACKS[currentTrackIndex] || RADIO_TRACKS[0];
 
-  // Apply fixed gentle background volume permanently
-  const enforceGentleVolume = useCallback(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-    try {
-      audio.muted = false;
-      audio.volume = DEFAULT_BACKGROUND_GAIN;
-    } catch (err) {
-      console.warn('Volume set error:', err);
+  // Update volume whenever volume or isMuted changes
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = isMuted ? 0 : volume;
     }
-  }, []);
+  }, [volume, isMuted]);
 
   // Jump to next random track
   const playNextRandomTrack = useCallback(() => {
     setQueuePos((prevPos) => {
       const nextPos = prevPos + 1;
       if (nextPos >= queue.length) {
-        // Reshuffle queue seamlessly when cycle completes
         const newQueue = shuffleIndices(RADIO_TRACKS.length, queue[queue.length - 1]);
         setQueue(newQueue);
         return 0;
@@ -140,15 +137,21 @@ export const TournamentRadio: React.FC = () => {
     });
   }, [queue]);
 
-  // Handle track changing
+  // Handle track switching (ONLY when currentTrack.url changes, NOT when isPlaying toggles)
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
 
-    audio.src = currentTrack.url;
-    audio.load();
-    enforceGentleVolume();
+    if (isFirstMount.current) {
+      isFirstMount.current = false;
+      audio.src = currentTrack.url;
+      audio.volume = isMuted ? 0 : volume;
+      return;
+    }
 
+    audio.src = currentTrack.url;
+    audio.volume = isMuted ? 0 : volume;
+    audio.load();
     setCurrentTime(0);
     setDuration(0);
 
@@ -158,23 +161,18 @@ export const TournamentRadio: React.FC = () => {
       if (playPromise !== undefined) {
         playPromise
           .then(() => {
-            enforceGentleVolume();
             setIsLoading(false);
           })
           .catch((err) => {
-            console.warn('Playback blocked or failed, auto-advancing:', err);
+            console.warn('Track switch playback notice:', err);
             setIsLoading(false);
-            if (isPlaying) {
-              setTimeout(() => {
-                playNextRandomTrack();
-              }, 400);
-            }
           });
       }
     }
-  }, [currentTrack.url, enforceGentleVolume, isPlaying, playNextRandomTrack]);
+  }, [currentTrack.url]); // Strictly depends only on currentTrack.url
 
-  const togglePlay = (e?: React.MouseEvent) => {
+  // Play / Pause toggle
+  const togglePlay = async (e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
     const audio = audioRef.current;
     if (!audio) return;
@@ -182,24 +180,22 @@ export const TournamentRadio: React.FC = () => {
     if (isPlaying) {
       audio.pause();
       setIsPlaying(false);
+      setIsLoading(false);
     } else {
       setIsLoading(true);
-      if (!audio.src || audio.src === '' || audio.src === window.location.href) {
-        audio.src = currentTrack.url;
+      try {
+        if (!audio.src || audio.src === '' || audio.src === window.location.href) {
+          audio.src = currentTrack.url;
+        }
+        audio.volume = isMuted ? 0 : volume;
+        await audio.play();
+        setIsPlaying(true);
+        setIsLoading(false);
+      } catch (err) {
+        console.warn('Playback request error on PC/browser:', err);
+        setIsLoading(false);
+        setIsPlaying(false);
       }
-      enforceGentleVolume();
-      audio
-        .play()
-        .then(() => {
-          enforceGentleVolume();
-          setIsLoading(false);
-          setIsPlaying(true);
-        })
-        .catch((err) => {
-          console.warn('Audio play notice:', err);
-          setIsLoading(false);
-          setIsPlaying(false);
-        });
     }
   };
 
@@ -219,34 +215,41 @@ export const TournamentRadio: React.FC = () => {
     return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
   };
 
+  const toggleMute = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsMuted((prev) => !prev);
+  };
+
+  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newVol = parseFloat(e.target.value);
+    setVolume(newVol);
+    if (isMuted && newVol > 0) {
+      setIsMuted(false);
+    }
+  };
+
   return (
     <>
       {/* Background Audio Node */}
       <audio
         ref={audioRef}
+        preload="metadata"
         onTimeUpdate={handleTimeUpdate}
-        onLoadedMetadata={() => {
-          handleTimeUpdate();
-          enforceGentleVolume();
-        }}
-        onLoadedData={enforceGentleVolume}
-        onCanPlay={enforceGentleVolume}
-        onPlay={enforceGentleVolume}
-        onPlaying={() => {
-          setIsLoading(false);
-          enforceGentleVolume();
-        }}
+        onLoadedMetadata={handleTimeUpdate}
+        onPlay={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
+        onPlaying={() => setIsLoading(false)}
+        onWaiting={() => setIsLoading(true)}
         onEnded={playNextRandomTrack}
         onError={() => {
-          console.warn('Track stream error, auto-advancing to next track...');
+          console.warn('Audio stream error, skipping to next track...');
           setIsLoading(false);
           if (isPlaying) {
             setTimeout(() => {
               playNextRandomTrack();
-            }, 400);
+            }, 300);
           }
         }}
-        onWaiting={() => setIsLoading(true)}
       />
 
       {/* FLOATING BOTTOM-RIGHT CONTAINER */}
@@ -265,17 +268,25 @@ export const TournamentRadio: React.FC = () => {
                 opacity: 0,
                 scale: 0.86,
                 y: 18,
-                transition: { duration: 0.22, ease: [0.22, 1, 0.36, 1] }
+                transition: { duration: 0.2, ease: [0.22, 1, 0.36, 1] },
               }}
               transition={{ type: 'spring', damping: 25, stiffness: 320 }}
-              className="w-[290px] sm:w-[320px] mb-3 bg-[#06100a]/95 border border-[#00ff66]/40 rounded-2xl p-4 shadow-[0_20px_50px_rgba(0,0,0,0.9),0_0_30px_rgba(0,255,102,0.18)] backdrop-blur-2xl text-white origin-bottom-right"
+              className="w-[300px] sm:w-[330px] mb-3 bg-[#06100a]/95 border border-[#00ff66]/40 rounded-2xl p-4 shadow-[0_20px_50px_rgba(0,0,0,0.9),0_0_30px_rgba(0,255,102,0.18)] backdrop-blur-2xl text-white origin-bottom-right"
             >
               {/* Header: Radio TM Live + Minimize */}
               <div className="flex items-center justify-between pb-2.5 border-b border-white/10">
                 <div className="flex items-center gap-2">
                   <span className="relative flex h-2.5 w-2.5">
-                    <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${isPlaying ? 'bg-[#00ff66]' : 'bg-slate-500'}`} />
-                    <span className={`relative inline-flex rounded-full h-2.5 w-2.5 ${isPlaying ? 'bg-[#00ff66]' : 'bg-slate-600'}`} />
+                    <span
+                      className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
+                        isPlaying ? 'bg-[#00ff66]' : 'bg-slate-500'
+                      }`}
+                    />
+                    <span
+                      className={`relative inline-flex rounded-full h-2.5 w-2.5 ${
+                        isPlaying ? 'bg-[#00ff66]' : 'bg-slate-600'
+                      }`}
+                    />
                   </span>
                   <span className="font-esports font-black text-sm tracking-wider text-white">
                     Radio Tm
@@ -289,19 +300,18 @@ export const TournamentRadio: React.FC = () => {
                 </div>
 
                 <motion.button
-                  whileHover={{ scale: 1.15, rotate: 180 }}
+                  whileHover={{ scale: 1.15 }}
                   whileTap={{ scale: 0.9 }}
-                  transition={{ type: 'spring', damping: 15, stiffness: 400 }}
                   type="button"
                   onClick={() => setIsExpanded(false)}
                   className="p-1 text-slate-400 hover:text-white hover:bg-white/5 rounded transition-colors cursor-pointer"
-                  title="بستن و کوچک‌نمایی"
+                  title="کوچک‌نمایی رادیو"
                 >
                   <ChevronDown className="w-4 h-4 text-[#00ff66]" />
                 </motion.button>
               </div>
 
-              {/* Current Random Track Broadcast Info */}
+              {/* Current Track Broadcast Info */}
               <div className="py-3 flex items-center gap-3">
                 <div
                   className={`w-12 h-12 rounded-xl bg-gradient-to-br from-[#0a2315] to-[#040a06] border border-[#00ff66]/40 flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(0,255,102,0.2)] transition-shadow duration-300 ${
@@ -312,7 +322,7 @@ export const TournamentRadio: React.FC = () => {
                     className={`w-7 h-7 text-[#00ff66] transition-transform ${
                       isPlaying ? 'animate-spin' : ''
                     }`}
-                    style={{ animationDuration: '4s' }}
+                    style={{ animationDuration: '3.5s' }}
                   />
                 </div>
 
@@ -333,11 +343,13 @@ export const TournamentRadio: React.FC = () => {
                 </div>
               </div>
 
-              {/* Live Radio Equalizer Animation */}
-              <div className="py-1 px-2 rounded-lg bg-black/50 border border-white/5 flex items-center justify-between mb-2">
-                <span className="text-[10px] font-tech text-slate-400 flex items-center gap-1">
-                  <Radio className={`w-3 h-3 ${isPlaying ? 'text-[#00ff66] animate-pulse' : 'text-slate-600'}`} />
-                  <span>پخش زنده رادیو</span>
+              {/* Live Equalizer Animation */}
+              <div className="py-1 px-2.5 rounded-lg bg-black/50 border border-white/5 flex items-center justify-between mb-2.5">
+                <span className="text-[10px] font-tech text-slate-400 flex items-center gap-1.5">
+                  <Radio
+                    className={`w-3 h-3 ${isPlaying ? 'text-[#00ff66] animate-pulse' : 'text-slate-600'}`}
+                  />
+                  <span>پخش زنده استریم</span>
                 </span>
 
                 {/* Dynamic Sound Wave Bars */}
@@ -345,18 +357,22 @@ export const TournamentRadio: React.FC = () => {
                   {[1, 2, 3, 4, 5, 6].map((bar) => (
                     <motion.span
                       key={bar}
-                      animate={isPlaying ? {
-                        height: [
-                          `${Math.sin(bar * 1.3) * 6 + 9}px`,
-                          `${Math.cos(bar * 1.5) * 5 + 8}px`,
-                          `${Math.sin(bar * 2.1) * 7 + 10}px`,
-                          `${Math.sin(bar * 1.3) * 6 + 9}px`,
-                        ]
-                      } : { height: '3px' }}
+                      animate={
+                        isPlaying
+                          ? {
+                              height: [
+                                `${Math.sin(bar * 1.3) * 6 + 9}px`,
+                                `${Math.cos(bar * 1.5) * 5 + 8}px`,
+                                `${Math.sin(bar * 2.1) * 7 + 10}px`,
+                                `${Math.sin(bar * 1.3) * 6 + 9}px`,
+                              ],
+                            }
+                          : { height: '3px' }
+                      }
                       transition={{
                         repeat: Infinity,
                         duration: 0.6 + bar * 0.1,
-                        ease: 'easeInOut'
+                        ease: 'easeInOut',
                       }}
                       className="w-1 rounded-full bg-[#00ff66]"
                     />
@@ -364,11 +380,9 @@ export const TournamentRadio: React.FC = () => {
                 </div>
               </div>
 
-              {/* Broadcast Progress Bar (Display-only, no seeking) */}
-              <div className="space-y-1">
-                <div
-                  className="w-full h-1.5 bg-slate-800/80 rounded-full overflow-hidden relative"
-                >
+              {/* Broadcast Progress Bar */}
+              <div className="space-y-1 mb-2.5">
+                <div className="w-full h-1.5 bg-slate-800/80 rounded-full overflow-hidden relative">
                   <motion.div
                     className="h-full bg-gradient-to-r from-[#00ff66] to-[#10b981]"
                     style={{ width: `${duration > 0 ? (currentTime / duration) * 100 : 0}%` }}
@@ -377,13 +391,46 @@ export const TournamentRadio: React.FC = () => {
                 </div>
                 <div className="flex items-center justify-between text-[10px] font-tech text-slate-400">
                   <span>{formatTime(currentTime)}</span>
-                  <span className="text-slate-500 font-mono">ON-AIR</span>
+                  <span className="text-[#00ff66] font-mono">ON-AIR</span>
                   <span>{formatTime(duration)}</span>
                 </div>
               </div>
 
+              {/* Volume Slider & Controls */}
+              <div className="p-2 rounded-xl bg-black/40 border border-white/5 flex items-center gap-2 mb-3">
+                <button
+                  type="button"
+                  onClick={toggleMute}
+                  className="text-slate-400 hover:text-[#00ff66] transition-colors p-1 cursor-pointer"
+                  title={isMuted ? 'لغو بی‌صدا' : 'بی‌صدا کردن'}
+                >
+                  {isMuted || volume === 0 ? (
+                    <VolumeX className="w-4 h-4 text-red-400" />
+                  ) : volume < 0.5 ? (
+                    <Volume1 className="w-4 h-4 text-[#00ff66]" />
+                  ) : (
+                    <Volume2 className="w-4 h-4 text-[#00ff66]" />
+                  )}
+                </button>
+
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.01"
+                  value={isMuted ? 0 : volume}
+                  onChange={handleVolumeChange}
+                  className="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-[#00ff66]"
+                  title={`میزان صدا: ${Math.round((isMuted ? 0 : volume) * 100)}%`}
+                />
+
+                <span className="text-[10px] font-tech text-slate-400 w-8 text-right font-mono">
+                  {Math.round((isMuted ? 0 : volume) * 100)}%
+                </span>
+              </div>
+
               {/* Live Controls: Play / Pause + Next Track */}
-              <div className="pt-3 flex items-center justify-center gap-2">
+              <div className="flex items-center justify-center gap-2">
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.96 }}
@@ -469,7 +516,9 @@ export const TournamentRadio: React.FC = () => {
 
           {/* Radio Signal Icon & Branding */}
           <div className="flex items-center gap-1.5">
-            <Radio className={`w-3.5 h-3.5 ${isPlaying ? 'text-[#00ff66] animate-pulse' : 'text-slate-400'}`} />
+            <Radio
+              className={`w-3.5 h-3.5 ${isPlaying ? 'text-[#00ff66] animate-pulse' : 'text-slate-400'}`}
+            />
             <span className="font-esports font-black text-xs tracking-wider text-white">
               Radio Tm
             </span>
@@ -483,6 +532,19 @@ export const TournamentRadio: React.FC = () => {
             <span className="text-slate-500">•</span>
             <span className="truncate font-condensed">{currentTrack.title}</span>
           </div>
+
+          {/* Quick Skip Button in Capsule */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              playNextRandomTrack();
+            }}
+            className="hidden sm:flex p-1 text-slate-400 hover:text-[#00ff66] transition-colors cursor-pointer"
+            title="آهنگ بعدی"
+          >
+            <SkipForward className="w-3 h-3" />
+          </button>
 
           {/* Expand / Collapse Indicator */}
           <div className="flex items-center gap-1 pl-1 border-l border-white/10 text-[#00ff66]">
