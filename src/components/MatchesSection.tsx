@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { Swords, Calendar, Clock, Shield, CheckCircle2, ChevronRight, Send, ArrowRight, Layers, Flame } from 'lucide-react';
 import { TOURNAMENT_MATCHES, TELEGRAM_CHANNEL_URL, TELEGRAM_CHANNEL_HANDLE } from '../data/tournamentData';
 import { TournamentMatch } from '../types';
@@ -84,7 +85,8 @@ export const MatchesSection: React.FC<MatchesSectionProps> = ({ onSelectTeamByNa
 
           {/* Quick Filter Tabs */}
           <div className="flex flex-wrap items-center gap-2 bg-[#050b08] p-1.5 rounded-sm border border-white/10 self-start md:self-auto">
-            <button
+            <motion.button
+              whileTap={{ scale: 0.95 }}
               type="button"
               onClick={() => setActiveFilter('ALL')}
               className={`px-4 py-2 rounded-sm font-tech text-xs font-bold tracking-wider transition-all cursor-pointer ${
@@ -94,8 +96,9 @@ export const MatchesSection: React.FC<MatchesSectionProps> = ({ onSelectTeamByNa
               }`}
             >
               ALL FIXTURES ({upcomingMatches.length})
-            </button>
-            <button
+            </motion.button>
+            <motion.button
+              whileTap={{ scale: 0.95 }}
               type="button"
               onClick={() => setActiveFilter('LEAGUE 1')}
               className={`px-4 py-2 rounded-sm font-tech text-xs font-bold tracking-wider transition-all cursor-pointer ${
@@ -105,8 +108,9 @@ export const MatchesSection: React.FC<MatchesSectionProps> = ({ onSelectTeamByNa
               }`}
             >
               LEAGUE 1 ({league1UpcomingCount})
-            </button>
-            <button
+            </motion.button>
+            <motion.button
+              whileTap={{ scale: 0.95 }}
               type="button"
               onClick={() => setActiveFilter('LEAGUE 2')}
               className={`px-4 py-2 rounded-sm font-tech text-xs font-bold tracking-wider transition-all cursor-pointer ${
@@ -116,8 +120,9 @@ export const MatchesSection: React.FC<MatchesSectionProps> = ({ onSelectTeamByNa
               }`}
             >
               LEAGUE 2 ({league2UpcomingCount})
-            </button>
-            <button
+            </motion.button>
+            <motion.button
+              whileTap={{ scale: 0.95 }}
               type="button"
               onClick={() => setActiveFilter('RESULTS')}
               className={`px-4 py-2 rounded-sm font-tech text-xs font-bold tracking-wider transition-all cursor-pointer flex items-center gap-1.5 ${
@@ -128,7 +133,7 @@ export const MatchesSection: React.FC<MatchesSectionProps> = ({ onSelectTeamByNa
             >
               <CheckCircle2 className="w-3.5 h-3.5" />
               <span>RESULTS ({completedMatches.length})</span>
-            </button>
+            </motion.button>
           </div>
         </div>
 

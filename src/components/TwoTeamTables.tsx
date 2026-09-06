@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'motion/react';
 import { GROUP_A_TEAMS, GROUP_B_TEAMS } from '../data/tournamentData';
 import { TournamentTeam } from '../types';
 import { TmBrushLogo } from './TmBrushLogo';
@@ -79,7 +80,9 @@ export const TwoTeamTables: React.FC<TwoTeamTablesProps> = ({ onSelectTeam }) =>
                 {GROUP_A_TEAMS.map((team, index) => {
                   const isHovered = hoveredTeamId === team.id;
                   return (
-                    <div
+                    <motion.div
+                      whileTap={{ scale: 0.985 }}
+                      transition={{ type: 'spring', damping: 20, stiffness: 400 }}
                       key={team.id}
                       onClick={() => onSelectTeam(team)}
                       onMouseEnter={() => setHoveredTeamId(team.id)}
@@ -149,7 +152,7 @@ export const TwoTeamTables: React.FC<TwoTeamTablesProps> = ({ onSelectTeam }) =>
                           isHovered ? 'w-full opacity-100' : 'w-0 opacity-0'
                         }`}
                       />
-                    </div>
+                    </motion.div>
                   );
                 })}
               </div>
@@ -193,7 +196,9 @@ export const TwoTeamTables: React.FC<TwoTeamTablesProps> = ({ onSelectTeam }) =>
                 {GROUP_B_TEAMS.map((team, index) => {
                   const isHovered = hoveredTeamId === team.id;
                   return (
-                    <div
+                    <motion.div
+                      whileTap={{ scale: 0.985 }}
+                      transition={{ type: 'spring', damping: 20, stiffness: 400 }}
                       key={team.id}
                       onClick={() => onSelectTeam(team)}
                       onMouseEnter={() => setHoveredTeamId(team.id)}
@@ -263,7 +268,7 @@ export const TwoTeamTables: React.FC<TwoTeamTablesProps> = ({ onSelectTeam }) =>
                           isHovered ? 'w-full opacity-100' : 'w-0 opacity-0'
                         }`}
                       />
-                    </div>
+                    </motion.div>
                   );
                 })}
               </div>

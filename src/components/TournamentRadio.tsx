@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import {
   Radio,
   Play,
@@ -218,143 +219,173 @@ export const TournamentRadio: React.FC = () => {
         id="radio-tm-widget"
         className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col items-end pointer-events-auto select-none"
       >
-        {/* EXPANDED POPUP CARD ("بالا بیان") */}
-        {isExpanded && (
-          <div
-            className="w-[290px] sm:w-[320px] mb-3 bg-[#06100a]/95 border border-[#00ff66]/40 rounded-2xl p-4 shadow-[0_20px_50px_rgba(0,0,0,0.9),0_0_30px_rgba(0,255,102,0.18)] backdrop-blur-2xl transition-all duration-300 animate-fadeInUp origin-bottom-right text-white"
-          >
-            {/* Header: Radio TM Live + Minimize */}
-            <div className="flex items-center justify-between pb-2.5 border-b border-white/10">
-              <div className="flex items-center gap-2">
-                <span className="relative flex h-2.5 w-2.5">
-                  <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${isPlaying ? 'bg-[#00ff66]' : 'bg-slate-500'}`} />
-                  <span className={`relative inline-flex rounded-full h-2.5 w-2.5 ${isPlaying ? 'bg-[#00ff66]' : 'bg-slate-600'}`} />
-                </span>
-                <span className="font-esports font-black text-sm tracking-wider text-white">
-                  Radio Tm
-                </span>
-                <span className="text-[10px] font-tech text-[#00ff66] px-1.5 py-0.2 rounded bg-[#00ff66]/10 border border-[#00ff66]/30 uppercase tracking-wider font-bold">
-                  LIVE
-                </span>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => setIsExpanded(false)}
-                className="p-1 text-slate-400 hover:text-white hover:bg-white/5 rounded transition-colors cursor-pointer"
-                title="کوچک‌نمایی"
-              >
-                <ChevronDown className="w-4 h-4 text-[#00ff66]" />
-              </button>
-            </div>
-
-            {/* Current Random Track Broadcast Info */}
-            <div className="py-3 flex items-center gap-3">
-              <div
-                className={`w-12 h-12 rounded-xl bg-gradient-to-br from-[#0a2315] to-[#040a06] border border-[#00ff66]/40 flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(0,255,102,0.2)] ${
-                  isPlaying ? 'shadow-[0_0_20px_rgba(0,255,102,0.4)]' : ''
-                }`}
-              >
-                <Disc
-                  className={`w-7 h-7 text-[#00ff66] ${
-                    isPlaying ? 'animate-spin' : ''
-                  }`}
-                  style={{ animationDuration: '4s' }}
-                />
-              </div>
-
-              <div className="min-w-0 flex-1">
-                <div className="flex items-center gap-1.5">
-                  <h4 className="font-esports font-bold text-sm text-white truncate tracking-wide">
-                    {currentTrack.title}
-                  </h4>
-                </div>
-                <div className="flex items-center justify-between text-xs mt-0.5">
-                  <p className="font-condensed text-slate-300 truncate">
-                    {currentTrack.artist}
-                  </p>
-                  <span className="text-[9px] font-tech text-[#00ff66] px-1.5 py-0.2 rounded bg-white/5 border border-white/10 shrink-0 ml-1">
-                    {currentTrack.tag}
+        {/* EXPANDED POPUP CARD ("بالا بیان") WITH ANIMATE PRESENCE */}
+        <AnimatePresence>
+          {isExpanded && (
+            <motion.div
+              key="radio-tm-popup-card"
+              initial={{ opacity: 0, scale: 0.88, y: 24, originX: 1, originY: 1 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{
+                opacity: 0,
+                scale: 0.86,
+                y: 18,
+                transition: { duration: 0.22, ease: [0.22, 1, 0.36, 1] }
+              }}
+              transition={{ type: 'spring', damping: 25, stiffness: 320 }}
+              className="w-[290px] sm:w-[320px] mb-3 bg-[#06100a]/95 border border-[#00ff66]/40 rounded-2xl p-4 shadow-[0_20px_50px_rgba(0,0,0,0.9),0_0_30px_rgba(0,255,102,0.18)] backdrop-blur-2xl text-white origin-bottom-right"
+            >
+              {/* Header: Radio TM Live + Minimize */}
+              <div className="flex items-center justify-between pb-2.5 border-b border-white/10">
+                <div className="flex items-center gap-2">
+                  <span className="relative flex h-2.5 w-2.5">
+                    <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${isPlaying ? 'bg-[#00ff66]' : 'bg-slate-500'}`} />
+                    <span className={`relative inline-flex rounded-full h-2.5 w-2.5 ${isPlaying ? 'bg-[#00ff66]' : 'bg-slate-600'}`} />
+                  </span>
+                  <span className="font-esports font-black text-sm tracking-wider text-white">
+                    Radio Tm
+                  </span>
+                  <span className="text-[10px] font-tech text-[#00ff66] px-1.5 py-0.2 rounded bg-[#00ff66]/10 border border-[#00ff66]/30 uppercase tracking-wider font-bold">
+                    LIVE
                   </span>
                 </div>
+
+                <motion.button
+                  whileHover={{ scale: 1.15, rotate: 180 }}
+                  whileTap={{ scale: 0.9 }}
+                  transition={{ type: 'spring', damping: 15, stiffness: 400 }}
+                  type="button"
+                  onClick={() => setIsExpanded(false)}
+                  className="p-1 text-slate-400 hover:text-white hover:bg-white/5 rounded transition-colors cursor-pointer"
+                  title="بستن و کوچک‌نمایی"
+                >
+                  <ChevronDown className="w-4 h-4 text-[#00ff66]" />
+                </motion.button>
               </div>
-            </div>
 
-            {/* Live Radio Equalizer Animation */}
-            <div className="py-1 px-2 rounded-lg bg-black/50 border border-white/5 flex items-center justify-between mb-2">
-              <span className="text-[10px] font-tech text-slate-400 flex items-center gap-1">
-                <Radio className={`w-3 h-3 ${isPlaying ? 'text-[#00ff66] animate-pulse' : 'text-slate-600'}`} />
-                <span>پخش زنده رادیو</span>
-              </span>
-
-              {/* Dynamic Sound Wave Bars */}
-              <div className="flex items-center gap-1 h-3">
-                {[1, 2, 3, 4, 5, 6].map((bar) => (
-                  <span
-                    key={bar}
-                    className={`w-1 rounded-full bg-[#00ff66] transition-all ${
-                      isPlaying ? 'animate-pulse' : 'h-1 opacity-30'
-                    }`}
-                    style={{
-                      height: isPlaying ? `${Math.sin(bar * 1.3) * 6 + 9}px` : '4px',
-                      animationDuration: `${0.4 + bar * 0.15}s`,
-                    }}
-                  />
-                ))}
-              </div>
-            </div>
-
-            {/* Broadcast Progress Bar (Display-only, no seeking) */}
-            <div className="space-y-1">
-              <div
-                className="w-full h-1.5 bg-slate-800/80 rounded-full overflow-hidden relative"
-              >
+              {/* Current Random Track Broadcast Info */}
+              <div className="py-3 flex items-center gap-3">
                 <div
-                  className="h-full bg-gradient-to-r from-[#00ff66] to-[#10b981] transition-all"
-                  style={{ width: `${duration > 0 ? (currentTime / duration) * 100 : 0}%` }}
-                />
-              </div>
-              <div className="flex items-center justify-between text-[10px] font-tech text-slate-400">
-                <span>{formatTime(currentTime)}</span>
-                <span className="text-slate-500 font-mono">ON-AIR</span>
-                <span>{formatTime(duration)}</span>
-              </div>
-            </div>
+                  className={`w-12 h-12 rounded-xl bg-gradient-to-br from-[#0a2315] to-[#040a06] border border-[#00ff66]/40 flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(0,255,102,0.2)] transition-shadow duration-300 ${
+                    isPlaying ? 'shadow-[0_0_20px_rgba(0,255,102,0.4)]' : ''
+                  }`}
+                >
+                  <Disc
+                    className={`w-7 h-7 text-[#00ff66] transition-transform ${
+                      isPlaying ? 'animate-spin' : ''
+                    }`}
+                    style={{ animationDuration: '4s' }}
+                  />
+                </div>
 
-            {/* Sole Control: Play / Pause Live Radio */}
-            <div className="pt-3 flex items-center justify-center">
-              <button
-                type="button"
-                onClick={(e) => togglePlay(e)}
-                className={`w-full py-3 px-6 rounded-xl flex items-center justify-center gap-2.5 transition-all cursor-pointer font-tech font-bold text-xs active:scale-98 ${
-                  isPlaying
-                    ? 'bg-[#00ff66] text-black shadow-[0_0_25px_rgba(0,255,102,0.6)] scale-[1.02]'
-                    : 'bg-[#0b2416] text-[#00ff66] border border-[#00ff66]/60 hover:bg-[#0f3420] shadow-[0_0_15px_rgba(0,255,102,0.2)] hover:border-[#00ff66]'
-                }`}
-                title={isPlaying ? 'قطع پخش رادیو' : 'اتصال به رادیو و پخش'}
-              >
-                {isLoading ? (
-                  <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-                ) : isPlaying ? (
-                  <>
-                    <Pause className="w-4 h-4 fill-current" />
-                    <span>توقف پخش رادیو</span>
-                  </>
-                ) : (
-                  <>
-                    <Play className="w-4 h-4 fill-current ml-0.5" />
-                    <span>اتصال و پخش زنده Radio Tm</span>
-                  </>
-                )}
-              </button>
-            </div>
-          </div>
-        )}
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-1.5">
+                    <h4 className="font-esports font-bold text-sm text-white truncate tracking-wide">
+                      {currentTrack.title}
+                    </h4>
+                  </div>
+                  <div className="flex items-center justify-between text-xs mt-0.5">
+                    <p className="font-condensed text-slate-300 truncate">
+                      {currentTrack.artist}
+                    </p>
+                    <span className="text-[9px] font-tech text-[#00ff66] px-1.5 py-0.2 rounded bg-white/5 border border-white/10 shrink-0 ml-1">
+                      {currentTrack.tag}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Live Radio Equalizer Animation */}
+              <div className="py-1 px-2 rounded-lg bg-black/50 border border-white/5 flex items-center justify-between mb-2">
+                <span className="text-[10px] font-tech text-slate-400 flex items-center gap-1">
+                  <Radio className={`w-3 h-3 ${isPlaying ? 'text-[#00ff66] animate-pulse' : 'text-slate-600'}`} />
+                  <span>پخش زنده رادیو</span>
+                </span>
+
+                {/* Dynamic Sound Wave Bars */}
+                <div className="flex items-center gap-1 h-3">
+                  {[1, 2, 3, 4, 5, 6].map((bar) => (
+                    <motion.span
+                      key={bar}
+                      animate={isPlaying ? {
+                        height: [
+                          `${Math.sin(bar * 1.3) * 6 + 9}px`,
+                          `${Math.cos(bar * 1.5) * 5 + 8}px`,
+                          `${Math.sin(bar * 2.1) * 7 + 10}px`,
+                          `${Math.sin(bar * 1.3) * 6 + 9}px`,
+                        ]
+                      } : { height: '3px' }}
+                      transition={{
+                        repeat: Infinity,
+                        duration: 0.6 + bar * 0.1,
+                        ease: 'easeInOut'
+                      }}
+                      className="w-1 rounded-full bg-[#00ff66]"
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {/* Broadcast Progress Bar (Display-only, no seeking) */}
+              <div className="space-y-1">
+                <div
+                  className="w-full h-1.5 bg-slate-800/80 rounded-full overflow-hidden relative"
+                >
+                  <motion.div
+                    className="h-full bg-gradient-to-r from-[#00ff66] to-[#10b981]"
+                    style={{ width: `${duration > 0 ? (currentTime / duration) * 100 : 0}%` }}
+                    transition={{ ease: 'linear' }}
+                  />
+                </div>
+                <div className="flex items-center justify-between text-[10px] font-tech text-slate-400">
+                  <span>{formatTime(currentTime)}</span>
+                  <span className="text-slate-500 font-mono">ON-AIR</span>
+                  <span>{formatTime(duration)}</span>
+                </div>
+              </div>
+
+              {/* Sole Control: Play / Pause Live Radio */}
+              <div className="pt-3 flex items-center justify-center">
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.96 }}
+                  transition={{ type: 'spring', damping: 20, stiffness: 400 }}
+                  type="button"
+                  onClick={(e) => togglePlay(e)}
+                  className={`w-full py-3 px-6 rounded-xl flex items-center justify-center gap-2.5 transition-colors cursor-pointer font-tech font-bold text-xs ${
+                    isPlaying
+                      ? 'bg-[#00ff66] text-black shadow-[0_0_25px_rgba(0,255,102,0.6)]'
+                      : 'bg-[#0b2416] text-[#00ff66] border border-[#00ff66]/60 hover:bg-[#0f3420] shadow-[0_0_15px_rgba(0,255,102,0.2)] hover:border-[#00ff66]'
+                  }`}
+                  title={isPlaying ? 'قطع پخش رادیو' : 'اتصال به رادیو و پخش'}
+                >
+                  {isLoading ? (
+                    <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                  ) : isPlaying ? (
+                    <>
+                      <Pause className="w-4 h-4 fill-current" />
+                      <span>توقف پخش رادیو</span>
+                    </>
+                  ) : (
+                    <>
+                      <Play className="w-4 h-4 fill-current ml-0.5" />
+                      <span>اتصال و پخش زنده Radio Tm</span>
+                    </>
+                  )}
+                </motion.button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* SMALL BOTTOM-RIGHT CAPSULE ("پایین سمت راست کوچیک") */}
-        <div
+        <motion.div
+          layout
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.96 }}
+          transition={{ type: 'spring', damping: 22, stiffness: 350 }}
           onClick={() => setIsExpanded(!isExpanded)}
-          className={`group flex items-center gap-2.5 px-3 py-2 rounded-full border cursor-pointer backdrop-blur-xl transition-all duration-300 shadow-[0_6px_25px_rgba(0,0,0,0.85)] ${
+          className={`group flex items-center gap-2.5 px-3 py-2 rounded-full border cursor-pointer backdrop-blur-xl transition-colors duration-300 shadow-[0_6px_25px_rgba(0,0,0,0.85)] ${
             isExpanded
               ? 'bg-[#06150d] border-[#00ff66] text-white shadow-[0_0_20px_rgba(0,255,102,0.3)]'
               : 'bg-[#050c08]/90 hover:bg-[#08180e] border-[#00ff66]/40 hover:border-[#00ff66] text-white'
@@ -362,13 +393,15 @@ export const TournamentRadio: React.FC = () => {
           title={isExpanded ? 'کوچک‌نمایی رادیو' : 'باز کردن Radio Tm'}
         >
           {/* Mini Play / Pause Button */}
-          <button
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
             type="button"
             onClick={(e) => togglePlay(e)}
-            className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 transition-transform cursor-pointer ${
+            className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 transition-all cursor-pointer ${
               isPlaying
-                ? 'bg-[#00ff66] text-black shadow-[0_0_12px_rgba(0,255,102,0.6)] scale-105'
-                : 'bg-[#0c2918] text-[#00ff66] border border-[#00ff66]/50 hover:scale-105'
+                ? 'bg-[#00ff66] text-black shadow-[0_0_12px_rgba(0,255,102,0.6)]'
+                : 'bg-[#0c2918] text-[#00ff66] border border-[#00ff66]/50'
             }`}
             title={isPlaying ? 'توقف' : 'پخش'}
           >
@@ -379,7 +412,7 @@ export const TournamentRadio: React.FC = () => {
             ) : (
               <Play className="w-3 h-3 fill-current ml-0.5" />
             )}
-          </button>
+          </motion.button>
 
           {/* Radio Signal Icon & Branding */}
           <div className="flex items-center gap-1.5">
@@ -406,7 +439,7 @@ export const TournamentRadio: React.FC = () => {
               <ChevronUp className="w-3.5 h-3.5 transition-transform group-hover:-translate-y-0.5" />
             )}
           </div>
-        </div>
+        </motion.div>
       </div>
     </>
   );

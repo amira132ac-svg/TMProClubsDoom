@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'motion/react';
 import { Shield, ChevronDown, Swords, Send, Trophy, Users } from 'lucide-react';
 import { TELEGRAM_CHANNEL_URL, TELEGRAM_CHANNEL_HANDLE } from '../data/tournamentData';
 
@@ -217,23 +218,29 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
              Buttons should be dark metallic with thin neon-green borders."
         */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 w-full max-w-md mx-auto mb-12">
-          <button
+          <motion.button
+            whileHover={{ scale: 1.03, y: -2 }}
+            whileTap={{ scale: 0.97, y: 1 }}
+            transition={{ type: 'spring', damping: 20, stiffness: 400 }}
             type="button"
             onClick={onViewStandings}
             className="w-full sm:w-auto flex-1 btn-metallic flex items-center justify-center gap-3 px-8 py-4 font-condensed font-bold text-lg text-white tracking-[0.2em] uppercase rounded-sm cursor-pointer group"
           >
             <Trophy className="w-5 h-5 text-[#00ff66] transition-transform group-hover:scale-110" />
             <span>VIEW STANDINGS</span>
-          </button>
+          </motion.button>
 
-          <button
+          <motion.button
+            whileHover={{ scale: 1.03, y: -2 }}
+            whileTap={{ scale: 0.97, y: 1 }}
+            transition={{ type: 'spring', damping: 20, stiffness: 400 }}
             type="button"
             onClick={onViewMatches}
             className="w-full sm:w-auto flex-1 btn-metallic flex items-center justify-center gap-3 px-8 py-4 font-condensed font-bold text-lg text-white tracking-[0.2em] uppercase rounded-sm cursor-pointer group"
           >
             <Swords className="w-5 h-5 text-[#00ff66] transition-transform group-hover:rotate-12" />
             <span>VIEW MATCHES</span>
-          </button>
+          </motion.button>
         </div>
 
         {/* Pre-Season Official Telegram Announcement Card (No fake timers or held matches) */}
@@ -283,7 +290,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </div>
           </div>
 
-          <a
+          <motion.a
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            transition={{ type: 'spring', damping: 20, stiffness: 400 }}
             href={TELEGRAM_CHANNEL_URL}
             target="_blank"
             rel="noopener noreferrer"
@@ -291,14 +301,19 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           >
             <Send className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />
             <span>JOIN {TELEGRAM_CHANNEL_HANDLE} FOR MATCH SCHEDULES</span>
-          </a>
+          </motion.a>
         </div>
 
         {/* Scroll Indicator */}
-        <div className="mt-10 flex flex-col items-center gap-1 text-slate-500 hover:text-[#00ff66] transition-colors cursor-pointer" onClick={onViewStandings}>
+        <motion.div
+          whileHover={{ y: 3 }}
+          transition={{ type: 'spring', damping: 15, stiffness: 400 }}
+          className="mt-10 flex flex-col items-center gap-1 text-slate-500 hover:text-[#00ff66] transition-colors cursor-pointer"
+          onClick={onViewStandings}
+        >
           <span className="text-[10px] font-tech tracking-[0.3em] uppercase">VIEW STANDINGS</span>
           <ChevronDown className="w-4 h-4 text-[#00ff66] animate-bounce" />
-        </div>
+        </motion.div>
 
       </div>
     </section>

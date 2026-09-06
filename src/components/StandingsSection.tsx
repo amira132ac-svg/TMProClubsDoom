@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { Trophy, Award, Shield, ChevronRight } from 'lucide-react';
 import { GROUP_A_TEAMS, GROUP_B_TEAMS } from '../data/tournamentData';
 import { TournamentTeam } from '../types';
@@ -40,7 +41,8 @@ export const StandingsSection: React.FC<StandingsSectionProps> = ({ onSelectTeam
 
           {/* Group Switcher Tabs */}
           <div className="flex items-center gap-2 bg-[#050b08] p-1 rounded-sm border border-white/10 self-start md:self-auto">
-            <button
+            <motion.button
+              whileTap={{ scale: 0.95 }}
               type="button"
               onClick={() => setActiveTab('A')}
               className={`px-5 py-2 rounded-sm font-tech text-xs sm:text-sm font-bold tracking-widest transition-all cursor-pointer ${
@@ -50,8 +52,9 @@ export const StandingsSection: React.FC<StandingsSectionProps> = ({ onSelectTeam
               }`}
             >
               LEAGUE 1 • لیگ ۱
-            </button>
-            <button
+            </motion.button>
+            <motion.button
+              whileTap={{ scale: 0.95 }}
               type="button"
               onClick={() => setActiveTab('B')}
               className={`px-5 py-2 rounded-sm font-tech text-xs sm:text-sm font-bold tracking-widest transition-all cursor-pointer ${
@@ -61,7 +64,7 @@ export const StandingsSection: React.FC<StandingsSectionProps> = ({ onSelectTeam
               }`}
             >
               LEAGUE 2 • لیگ ۲
-            </button>
+            </motion.button>
           </div>
         </div>
 
@@ -95,24 +98,33 @@ export const StandingsSection: React.FC<StandingsSectionProps> = ({ onSelectTeam
                   <th className="py-4 px-4 sm:px-6 text-right" title="Points">PTS</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/5 font-condensed">
-                {currentTeams.map((team, idx) => {
-                  const isTopFour = idx < 4;
-                  const isLeader = idx === 0;
-                  const goalDiff = team.goalsFor - team.goalsAgainst;
+              <AnimatePresence mode="wait">
+                <motion.tbody
+                  key={activeTab}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2, ease: 'easeOut' }}
+                  className="divide-y divide-white/5 font-condensed"
+                >
+                  {currentTeams.map((team, idx) => {
+                    const isTopFour = idx < 4;
+                    const isLeader = idx === 0;
+                    const goalDiff = team.goalsFor - team.goalsAgainst;
 
-                  return (
-                    <tr
-                      key={team.id}
-                      onClick={() => onSelectTeam(team)}
-                      className={`transition-all duration-200 cursor-pointer group select-none ${
-                        isLeader
-                          ? 'bg-[#081f13]/60 hover:bg-[#0c2a1b] shadow-[inset_0_0_20px_rgba(0,255,102,0.08)]'
-                          : isTopFour
-                          ? 'bg-[#05110a]/40 hover:bg-[#08180f]'
-                          : 'bg-transparent hover:bg-white/[0.02]'
-                      }`}
-                    >
+                    return (
+                      <motion.tr
+                        whileHover={{ backgroundColor: 'rgba(0, 255, 102, 0.04)' }}
+                        key={team.id}
+                        onClick={() => onSelectTeam(team)}
+                        className={`transition-colors duration-200 cursor-pointer group select-none ${
+                          isLeader
+                            ? 'bg-[#081f13]/60 shadow-[inset_0_0_20px_rgba(0,255,102,0.08)]'
+                            : isTopFour
+                            ? 'bg-[#05110a]/40'
+                            : 'bg-transparent'
+                        }`}
+                      >
                       {/* Rank Column */}
                       <td className="py-4 px-4 sm:px-6 text-center">
                         <div className="flex items-center justify-center gap-1.5">
@@ -208,10 +220,11 @@ export const StandingsSection: React.FC<StandingsSectionProps> = ({ onSelectTeam
                           <ChevronRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-[#00ff66] transition-colors" />
                         </div>
                       </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
+                      </motion.tr>
+                    );
+                  })}
+                </motion.tbody>
+              </AnimatePresence>
             </table>
           </div>
 
