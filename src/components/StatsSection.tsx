@@ -149,7 +149,7 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onSelectTeamByName }
                 </span>
               </h4>
               <p className="text-xs sm:text-sm text-slate-300 font-sans mt-0.5 leading-relaxed">
-                Official goal and assist records updated for INVADERZ, HANGOVER, SPIRITS, PARS LEGION, FC ADAB, SOROUSH FC, TEHRAN LEGACY, BANGER, and ROYAL MADRID FC. Remaining club statistics will be updated upon scorecard submission.
+                Official goal and assist records updated for PEAKY BLINDERS, INVADERZ, HANGOVER, SPIRITS, PARS LEGION, FC ADAB, SOROUSH FC, TEHRAN LEGACY, BANGER, and ROYAL MADRID FC. Remaining club statistics will be updated upon scorecard submission.
               </p>
             </div>
           </div>

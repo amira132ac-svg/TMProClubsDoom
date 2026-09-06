@@ -6,7 +6,8 @@ import {
   Pause,
   Disc,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  SkipForward,
 } from 'lucide-react';
 
 export interface RadioTrack {
@@ -52,6 +53,41 @@ const RADIO_TRACKS: RadioTrack[] = [
     artist: 'Orchestra Club',
     url: 'https://dl.tiktokmusics.ir/music/Zelda%20Great%20Fairy%20Fountain%20By%20Orchestra%20Club.mp3',
     tag: 'Orchestral / Ambient',
+  },
+  {
+    id: 'track-6',
+    title: 'BLOCKKIDS x Argent Sale (Remix)',
+    artist: 'German Goat',
+    url: 'https://dl.tiktokmusics.ir/music/Remix%20BLOCKKIDS%20x%20Argent%20Sale%20By%20German%20Goat.mp3',
+    tag: 'Hip-Hop / Remix',
+  },
+  {
+    id: 'track-7',
+    title: 'August 10',
+    artist: 'Julie Doiron',
+    url: 'https://dl.tiktokmusics.ir/music/August%2010%20By%C2%A0Julie%20Doiron.mp3',
+    tag: 'Indie / Acoustic',
+  },
+  {
+    id: 'track-8',
+    title: 'Mr. Saxobeat',
+    artist: 'Alexandra Stan',
+    url: 'https://dl.emusicfa.ir/Alexandra%20Stan/Mr.%20Saxobeat.mp3',
+    tag: 'Dance / Club Pop',
+  },
+  {
+    id: 'track-9',
+    title: 'Rytm Zendegy - Track 01',
+    artist: 'Rytm Zendegy',
+    url: 'https://rytmzendegy.ir/4cd6e343-4078-48b1-afac-554edfd72aae',
+    tag: 'Electronic / Beat',
+  },
+  {
+    id: 'track-10',
+    title: 'Rytm Zendegy - Track 02',
+    artist: 'Rytm Zendegy',
+    url: 'https://rytmzendegy.ir/ed7c4edd-86ca-444d-b126-44c119186de4',
+    tag: 'Electronic / Beat',
   },
 ];
 
@@ -104,6 +140,20 @@ export const TournamentRadio: React.FC = () => {
     }
   }, []);
 
+  // Jump to next random track
+  const playNextRandomTrack = useCallback(() => {
+    setQueuePos((prevPos) => {
+      const nextPos = prevPos + 1;
+      if (nextPos >= queue.length) {
+        // Reshuffle queue seamlessly when cycle completes
+        const newQueue = shuffleIndices(RADIO_TRACKS.length, queue[queue.length - 1]);
+        setQueue(newQueue);
+        return 0;
+      }
+      return nextPos;
+    });
+  }, [queue]);
+
   // Handle track changing
   useEffect(() => {
     const audio = audioRef.current;
@@ -126,27 +176,17 @@ export const TournamentRadio: React.FC = () => {
             setIsLoading(false);
           })
           .catch((err) => {
-            console.warn('Playback blocked or failed:', err);
+            console.warn('Playback blocked or failed, auto-advancing:', err);
             setIsLoading(false);
-            setIsPlaying(false);
+            if (isPlaying) {
+              setTimeout(() => {
+                playNextRandomTrack();
+              }, 400);
+            }
           });
       }
     }
-  }, [currentTrack.url, enforceGentleVolume]);
-
-  // Jump to next random track
-  const playNextRandomTrack = useCallback(() => {
-    setQueuePos((prevPos) => {
-      const nextPos = prevPos + 1;
-      if (nextPos >= queue.length) {
-        // Reshuffle queue seamlessly when cycle completes
-        const newQueue = shuffleIndices(RADIO_TRACKS.length, queue[queue.length - 1]);
-        setQueue(newQueue);
-        return 0;
-      }
-      return nextPos;
-    });
-  }, [queue]);
+  }, [currentTrack.url, enforceGentleVolume, isPlaying, playNextRandomTrack]);
 
   const togglePlay = (e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
@@ -211,6 +251,15 @@ export const TournamentRadio: React.FC = () => {
           enforceGentleVolume();
         }}
         onEnded={playNextRandomTrack}
+        onError={() => {
+          console.warn('Track stream error, auto-advancing to next track...');
+          setIsLoading(false);
+          if (isPlaying) {
+            setTimeout(() => {
+              playNextRandomTrack();
+            }, 400);
+          }
+        }}
         onWaiting={() => setIsLoading(true)}
       />
 
@@ -247,6 +296,9 @@ export const TournamentRadio: React.FC = () => {
                   </span>
                   <span className="text-[10px] font-tech text-[#00ff66] px-1.5 py-0.2 rounded bg-[#00ff66]/10 border border-[#00ff66]/30 uppercase tracking-wider font-bold">
                     LIVE
+                  </span>
+                  <span className="text-[10px] font-tech text-slate-400 px-1.5 py-0.2 rounded bg-white/5 border border-white/10 font-mono">
+                    {RADIO_TRACKS.length} TRACKS
                   </span>
                 </div>
 
@@ -344,15 +396,15 @@ export const TournamentRadio: React.FC = () => {
                 </div>
               </div>
 
-              {/* Sole Control: Play / Pause Live Radio */}
-              <div className="pt-3 flex items-center justify-center">
+              {/* Live Controls: Play / Pause + Next Track */}
+              <div className="pt-3 flex items-center justify-center gap-2">
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.96 }}
                   transition={{ type: 'spring', damping: 20, stiffness: 400 }}
                   type="button"
                   onClick={(e) => togglePlay(e)}
-                  className={`w-full py-3 px-6 rounded-xl flex items-center justify-center gap-2.5 transition-colors cursor-pointer font-tech font-bold text-xs ${
+                  className={`flex-1 py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors cursor-pointer font-tech font-bold text-xs ${
                     isPlaying
                       ? 'bg-[#00ff66] text-black shadow-[0_0_25px_rgba(0,255,102,0.6)]'
                       : 'bg-[#0b2416] text-[#00ff66] border border-[#00ff66]/60 hover:bg-[#0f3420] shadow-[0_0_15px_rgba(0,255,102,0.2)] hover:border-[#00ff66]'
@@ -372,6 +424,21 @@ export const TournamentRadio: React.FC = () => {
                       <span>اتصال و پخش زنده Radio Tm</span>
                     </>
                   )}
+                </motion.button>
+
+                <motion.button
+                  whileHover={{ scale: 1.08 }}
+                  whileTap={{ scale: 0.92 }}
+                  transition={{ type: 'spring', damping: 20, stiffness: 400 }}
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    playNextRandomTrack();
+                  }}
+                  className="p-3 rounded-xl bg-white/5 border border-white/10 hover:border-[#00ff66]/60 text-slate-300 hover:text-[#00ff66] transition-colors cursor-pointer flex items-center justify-center"
+                  title="آهنگ بعدی"
+                >
+                  <SkipForward className="w-4 h-4" />
                 </motion.button>
               </div>
             </motion.div>
