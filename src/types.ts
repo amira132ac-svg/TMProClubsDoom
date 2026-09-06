@@ -9,6 +9,7 @@ export interface TournamentTeam {
   id: string;
   rank: string;
   name: string;
+  alias?: string;
   group: 'A' | 'B';
   seed: number;
   shortCode: string;

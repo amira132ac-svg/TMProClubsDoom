@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Activity, Flag, Calendar, Award } from 'lucide-react';
+import { X, Activity, Flag, Calendar, Award, Users } from 'lucide-react';
 import { TournamentTeam } from '../types';
 import { TELEGRAM_CHANNEL_URL, TELEGRAM_CHANNEL_HANDLE } from '../data/tournamentData';
 
@@ -226,6 +226,45 @@ export const TeamModal: React.FC<TeamModalProps> = ({ team, onClose }) => {
                         >
                           {match.result === 'W' ? 'برد' : match.result === 'D' ? 'مساوی' : 'باخت'}
                         </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Squad / Key Players */}
+              {team.roster && team.roster.length > 0 && (
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <Users className="w-4 h-4 text-[#00ff66]" />
+                    <h4 className="font-tech text-xs font-bold uppercase tracking-wider text-slate-200">
+                      لیست بازیکنان و ستاره‌ها (SQUAD ROSTER)
+                    </h4>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {team.roster.map((player, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-center justify-between p-2.5 rounded bg-[#040806] border border-white/5 text-xs font-tech hover:border-[#00ff66]/40 transition-colors"
+                      >
+                        <div className="flex items-center gap-2">
+                          <span className="w-6 h-6 rounded bg-[#00ff66]/10 text-[#00ff66] font-mono font-bold flex items-center justify-center text-[11px] border border-[#00ff66]/30">
+                            #{player.number}
+                          </span>
+                          <span className="font-condensed font-bold text-white text-sm tracking-wide">
+                            {player.name}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <span className="px-1.5 py-0.5 rounded bg-white/5 text-slate-300 text-[10px] font-mono font-bold border border-white/10">
+                            {player.position}
+                          </span>
+                          {player.isCaptain && (
+                            <span className="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 text-[10px] font-bold border border-amber-500/30">
+                              CAPTAIN
+                            </span>
+                          )}
+                        </div>
                       </div>
                     ))}
                   </div>

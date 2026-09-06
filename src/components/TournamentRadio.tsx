@@ -18,6 +18,7 @@ export interface RadioTrack {
   title: string;
   artist: string;
   url: string;
+  fallbackUrl?: string;
   tag: string;
 }
 
@@ -26,56 +27,64 @@ const RADIO_TRACKS: RadioTrack[] = [
     id: 'track-1',
     title: 'What You Saying',
     artist: 'Lil Uzi Vert',
-    url: 'https://dl.tiktokmusics.ir/music/What%20You%20Saying%20By%20Lil%20Uzi%20Vert.mp3',
+    url: '/audio/uzi.mp3',
+    fallbackUrl: 'https://dl.tiktokmusics.ir/music/What%20You%20Saying%20By%20Lil%20Uzi%20Vert.mp3',
     tag: 'Hip-Hop / Trap',
   },
   {
     id: 'track-2',
     title: 'Heartbeat',
     artist: 'Childish Gambino',
-    url: 'https://dl.tiktokmusics.ir/music/Heartbeat%20By%20Childish%20Gambino.mp3',
+    url: '/audio/gambino.mp3',
+    fallbackUrl: 'https://dl.tiktokmusics.ir/music/Heartbeat%20By%20Childish%20Gambino.mp3',
     tag: 'Electropop / Rap',
   },
   {
     id: 'track-3',
     title: 'Loser',
     artist: 'Tame Impala',
-    url: 'https://dl.tiktokmusics.ir/music/Loser%20By%20Tame%20Impala.mp3',
+    url: '/audio/loser.mp3',
+    fallbackUrl: 'https://dl.tiktokmusics.ir/music/Loser%20By%20Tame%20Impala.mp3',
     tag: 'Psychedelic / Indie',
   },
   {
     id: 'track-4',
     title: 'Addiction',
     artist: 'LONOWN',
-    url: 'https://dl.tiktokmusics.ir/music/addiction%20By%20LONOWN.mp3',
+    url: '/audio/addiction.mp3',
+    fallbackUrl: 'https://dl.tiktokmusics.ir/music/addiction%20By%20LONOWN.mp3',
     tag: 'Phonk / Bass',
   },
   {
     id: 'track-5',
     title: 'Zelda Great Fairy Fountain',
     artist: 'Orchestra Club',
-    url: 'https://dl.tiktokmusics.ir/music/Zelda%20Great%20Fairy%20Fountain%20By%20Orchestra%20Club.mp3',
+    url: '/audio/zelda.mp3',
+    fallbackUrl: 'https://dl.tiktokmusics.ir/music/Zelda%20Great%20Fairy%20Fountain%20By%20Orchestra%20Club.mp3',
     tag: 'Orchestral / Ambient',
   },
   {
     id: 'track-6',
     title: 'BLOCKKIDS x Argent Sale (Remix)',
     artist: 'German Goat',
-    url: 'https://dl.tiktokmusics.ir/music/Remix%20BLOCKKIDS%20x%20Argent%20Sale%20By%20German%20Goat.mp3',
+    url: '/audio/remix.mp3',
+    fallbackUrl: 'https://dl.tiktokmusics.ir/music/Remix%20BLOCKKIDS%20x%20Argent%20Sale%20By%20German%20Goat.mp3',
     tag: 'Hip-Hop / Remix',
   },
   {
     id: 'track-7',
     title: 'Mr. Saxobeat',
     artist: 'Alexandra Stan',
-    url: 'https://dl.emusicfa.ir/Alexandra%20Stan/Mr.%20Saxobeat.mp3',
+    url: '/audio/saxobeat.mp3',
+    fallbackUrl: 'https://dl.emusicfa.ir/Alexandra%20Stan/Mr.%20Saxobeat.mp3',
     tag: 'Dance / Club Pop',
   },
   {
     id: 'track-8',
     title: 'Let It Happen',
     artist: 'Tame Impala',
-    url: 'https://dl.musicdel.ir/Music/1404/06/Tame%20Impala-Let%20It%20Happen%20-musicdel.ir.mp3',
+    url: '/audio/let_it_happen.mp3',
+    fallbackUrl: 'https://dl.musicdel.ir/Music/1404/06/Tame%20Impala-Let%20It%20Happen%20-musicdel.ir.mp3',
     tag: 'Psychedelic / Synthpop',
   },
 ];
@@ -184,15 +193,30 @@ export const TournamentRadio: React.FC = () => {
     } else {
       setIsLoading(true);
       try {
-        if (!audio.src || audio.src === '' || audio.src === window.location.href) {
+        if (!audio.src || audio.src === '' || !audio.src.includes(currentTrack.url)) {
           audio.src = currentTrack.url;
         }
         audio.volume = isMuted ? 0 : volume;
-        await audio.play();
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          await playPromise;
+        }
         setIsPlaying(true);
         setIsLoading(false);
       } catch (err) {
-        console.warn('Playback request error on PC/browser:', err);
+        console.warn('Primary audio playback error:', err);
+        // Try fallback mirror if primary encountered an issue
+        if (currentTrack.fallbackUrl && audio.src !== currentTrack.fallbackUrl) {
+          try {
+            audio.src = currentTrack.fallbackUrl;
+            await audio.play();
+            setIsPlaying(true);
+            setIsLoading(false);
+            return;
+          } catch (fallbackErr) {
+            console.warn('Fallback playback error:', fallbackErr);
+          }
+        }
         setIsLoading(false);
         setIsPlaying(false);
       }
@@ -236,19 +260,26 @@ export const TournamentRadio: React.FC = () => {
         preload="metadata"
         onTimeUpdate={handleTimeUpdate}
         onLoadedMetadata={handleTimeUpdate}
+        onCanPlay={() => setIsLoading(false)}
         onPlay={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}
         onPlaying={() => setIsLoading(false)}
         onWaiting={() => setIsLoading(true)}
         onEnded={playNextRandomTrack}
         onError={() => {
-          console.warn('Audio stream error, skipping to next track...');
-          setIsLoading(false);
-          if (isPlaying) {
-            setTimeout(() => {
-              playNextRandomTrack();
-            }, 300);
+          console.warn('Audio stream error, attempting fallback or next track...');
+          const audio = audioRef.current;
+          if (audio && currentTrack.fallbackUrl && audio.src !== currentTrack.fallbackUrl) {
+            audio.src = currentTrack.fallbackUrl;
+            if (isPlaying) {
+              audio.play().catch(() => playNextRandomTrack());
+            }
+            return;
           }
+          setIsLoading(false);
+          setTimeout(() => {
+            playNextRandomTrack();
+          }, 300);
         }}
       />
 
