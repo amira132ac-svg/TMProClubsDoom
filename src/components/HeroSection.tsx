@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { Shield, ChevronDown, Swords, Send, Trophy, Users } from 'lucide-react';
+import { Shield, ChevronDown, Swords, Send, Trophy, Users, Sparkles } from 'lucide-react';
 import { TELEGRAM_CHANNEL_URL, TELEGRAM_CHANNEL_HANDLE } from '../data/tournamentData';
+import { TournamentTab } from './SectionNavTabs';
 
 interface HeroSectionProps {
-  onViewStandings: () => void;
-  onViewMatches: () => void;
+  onSelectTab: (tab: TournamentTab) => void;
+  activeTab?: TournamentTab;
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({
-  onViewStandings,
-  onViewMatches,
+  onSelectTab,
+  activeTab = 'standings',
 }) => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
@@ -211,23 +212,18 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           </span>
         </p>
 
-        {/* Add CTA buttons: VIEW TEAMS & VIEW MATCHES as explicitly required:
-            "Add CTA buttons:
-             VIEW TEAMS
-             VIEW MATCHES
-             Buttons should be dark metallic with thin neon-green borders."
-        */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 w-full max-w-md mx-auto mb-12">
+        {/* HERO CALL-TO-ACTIONS */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 sm:gap-5 w-full max-w-lg mx-auto mb-10">
           <motion.button
             whileHover={{ scale: 1.03, y: -2 }}
             whileTap={{ scale: 0.97, y: 1 }}
             transition={{ type: 'spring', damping: 20, stiffness: 400 }}
             type="button"
-            onClick={onViewStandings}
-            className="w-full sm:w-auto flex-1 btn-metallic flex items-center justify-center gap-3 px-8 py-4 font-condensed font-bold text-lg text-white tracking-[0.2em] uppercase rounded-sm cursor-pointer group"
+            onClick={() => onSelectTab('standings')}
+            className="w-full sm:w-auto flex-1 flex items-center justify-center gap-3 px-7 py-3.5 bg-[#00ff66] text-black font-condensed font-bold text-base sm:text-lg tracking-[0.18em] uppercase rounded-xl cursor-pointer shadow-[0_0_25px_rgba(0,255,102,0.4)] hover:shadow-[0_0_35px_rgba(0,255,102,0.6)] transition-all group"
           >
-            <Trophy className="w-5 h-5 text-[#00ff66] transition-transform group-hover:scale-110" />
-            <span>VIEW STANDINGS</span>
+            <Trophy className="w-5 h-5 text-black transition-transform group-hover:scale-110" />
+            <span>EXPLORE TOURNAMENT</span>
           </motion.button>
 
           <motion.button
@@ -235,11 +231,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             whileTap={{ scale: 0.97, y: 1 }}
             transition={{ type: 'spring', damping: 20, stiffness: 400 }}
             type="button"
-            onClick={onViewMatches}
-            className="w-full sm:w-auto flex-1 btn-metallic flex items-center justify-center gap-3 px-8 py-4 font-condensed font-bold text-lg text-white tracking-[0.2em] uppercase rounded-sm cursor-pointer group"
+            onClick={() => onSelectTab('matches')}
+            className="w-full sm:w-auto flex-1 btn-metallic flex items-center justify-center gap-3 px-7 py-3.5 font-condensed font-bold text-base sm:text-lg text-white tracking-[0.18em] uppercase rounded-xl border border-white/15 hover:border-[#00ff66]/50 cursor-pointer group shadow-[0_4px_20px_rgba(0,0,0,0.6)]"
           >
             <Swords className="w-5 h-5 text-[#00ff66] transition-transform group-hover:rotate-12" />
-            <span>VIEW MATCHES</span>
+            <span>MATCH FIXTURES</span>
           </motion.button>
         </div>
 
@@ -309,7 +305,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           whileHover={{ y: 3 }}
           transition={{ type: 'spring', damping: 15, stiffness: 400 }}
           className="mt-10 flex flex-col items-center gap-1 text-slate-500 hover:text-[#00ff66] transition-colors cursor-pointer"
-          onClick={onViewStandings}
+          onClick={() => onSelectTab('standings')}
         >
           <span className="text-[10px] font-tech tracking-[0.3em] uppercase">VIEW STANDINGS</span>
           <ChevronDown className="w-4 h-4 text-[#00ff66] animate-bounce" />

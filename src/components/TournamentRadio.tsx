@@ -63,31 +63,17 @@ const RADIO_TRACKS: RadioTrack[] = [
   },
   {
     id: 'track-7',
-    title: 'August 10',
-    artist: 'Julie Doiron',
-    url: 'https://dl.tiktokmusics.ir/music/August%2010%20By%C2%A0Julie%20Doiron.mp3',
-    tag: 'Indie / Acoustic',
-  },
-  {
-    id: 'track-8',
     title: 'Mr. Saxobeat',
     artist: 'Alexandra Stan',
     url: 'https://dl.emusicfa.ir/Alexandra%20Stan/Mr.%20Saxobeat.mp3',
     tag: 'Dance / Club Pop',
   },
   {
-    id: 'track-9',
-    title: 'Rytm Zendegy - Track 01',
-    artist: 'Rytm Zendegy',
-    url: 'https://rytmzendegy.ir/4cd6e343-4078-48b1-afac-554edfd72aae',
-    tag: 'Electronic / Beat',
-  },
-  {
-    id: 'track-10',
-    title: 'Rytm Zendegy - Track 02',
-    artist: 'Rytm Zendegy',
-    url: 'https://rytmzendegy.ir/ed7c4edd-86ca-444d-b126-44c119186de4',
-    tag: 'Electronic / Beat',
+    id: 'track-8',
+    title: 'Let It Happen',
+    artist: 'Tame Impala',
+    url: 'https://dl.musicdel.ir/Music/1404/06/Tame%20Impala-Let%20It%20Happen%20-musicdel.ir.mp3',
+    tag: 'Psychedelic / Synthpop',
   },
 ];
 
