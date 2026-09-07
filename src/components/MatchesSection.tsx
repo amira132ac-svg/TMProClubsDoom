@@ -51,7 +51,7 @@ export const MatchesSection: React.FC<MatchesSectionProps> = ({ onSelectTeamByNa
     if (n.includes('mess')) return 'MSH';
     if (n.includes('peaky') || n.includes('viking')) return 'PKB';
     if (n.includes('vafadar')) return 'VFD';
-    if (n.includes('gorgali')) return 'GRG';
+    if (n.includes('gorgali') || n.includes('goorgali')) return 'GRG';
     if (n.includes('hangover')) return 'HNG';
     if (n.includes('soroush')) return 'SRH';
     return name.slice(0, 3).toUpperCase();
