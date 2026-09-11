@@ -1,6 +1,8 @@
 export interface TeamPlayer {
   name: string;
-  position: 'GK' | 'CB' | 'LB' | 'RB' | 'CDM' | 'CM' | 'CAM' | 'RW' | 'LW' | 'ST';
+  position?: 'GK' | 'CB' | 'LB' | 'RB' | 'CDM' | 'CM' | 'CAM' | 'RW' | 'LW' | 'ST' | string;
+  role?: string;
+  rating?: string;
   number: number;
   isCaptain?: boolean;
 }

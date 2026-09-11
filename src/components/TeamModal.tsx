@@ -113,20 +113,28 @@ export const TeamModal: React.FC<TeamModalProps> = ({ team, onClose }) => {
             {/* Modal Body with smooth scrolling */}
             <div className="p-5 sm:p-6 space-y-5 max-h-[75vh] overflow-y-auto">
               {/* Stats Grid */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
                 <div className="bg-[#08130d] p-3 rounded border border-white/5 flex flex-col justify-between">
-                  <span className="text-[10px] font-tech text-slate-400 uppercase">بازی‌ها (PLAYED)</span>
+                  <span className="text-[10px] font-tech text-slate-400 uppercase">بازی‌ها (P)</span>
                   <span className="font-esports font-bold text-2xl text-white mt-1">{team.played}</span>
                 </div>
                 <div className="bg-[#08130d] p-3 rounded border border-white/5 flex flex-col justify-between">
                   <span className="text-[10px] font-tech text-slate-400 uppercase">برد / تساوی / باخت</span>
-                  <span className="font-esports font-bold text-xl text-white mt-1">
+                  <span className="font-esports font-bold text-lg text-white mt-1">
                     <span className="text-[#00ff66]">{team.wins}</span>
                     <span className="text-slate-600 mx-1">/</span>
                     <span className="text-yellow-400">{team.draws}</span>
                     <span className="text-slate-600 mx-1">/</span>
                     <span className="text-red-400">{team.losses}</span>
                   </span>
+                </div>
+                <div className="bg-[#08130d] p-3 rounded border border-white/5 flex flex-col justify-between">
+                  <span className="text-[10px] font-tech text-slate-400 uppercase">گل زده (GF)</span>
+                  <span className="font-esports font-bold text-2xl text-slate-200 mt-1">{team.goalsFor}</span>
+                </div>
+                <div className="bg-[#08130d] p-3 rounded border border-white/5 flex flex-col justify-between">
+                  <span className="text-[10px] font-tech text-slate-400 uppercase">گل خورده (GA)</span>
+                  <span className="font-esports font-bold text-2xl text-slate-300 mt-1">{team.goalsAgainst}</span>
                 </div>
                 <div className="bg-[#08130d] p-3 rounded border border-white/5 flex flex-col justify-between">
                   <span className="text-[10px] font-tech text-slate-400 uppercase">تفاضل گل (GD)</span>
@@ -137,7 +145,7 @@ export const TeamModal: React.FC<TeamModalProps> = ({ team, onClose }) => {
                   </span>
                 </div>
                 <div className="bg-[#0a2014] p-3 rounded border border-[#00ff66]/40 flex flex-col justify-between shadow-[0_0_15px_rgba(0,255,102,0.1)]">
-                  <span className="text-[10px] font-tech text-[#00ff66] uppercase font-bold">امتیاز کل (PTS)</span>
+                  <span className="text-[10px] font-tech text-[#00ff66] uppercase font-bold">امتیاز (PTS)</span>
                   <span className="font-esports font-black text-3xl text-[#00ff66] mt-0.5">{team.points}</span>
                 </div>
               </div>
@@ -199,11 +207,16 @@ export const TeamModal: React.FC<TeamModalProps> = ({ team, onClose }) => {
               {/* Recent Recorded Matches */}
               {recentMatches.length > 0 && (
                 <div>
-                  <div className="flex items-center gap-2 mb-3">
-                    <Activity className="w-4 h-4 text-[#00ff66]" />
-                    <h4 className="font-tech text-xs font-bold uppercase tracking-wider text-slate-200">
-                      مسابقات ثبت‌شده اخیر
-                    </h4>
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <Activity className="w-4 h-4 text-[#00ff66]" />
+                      <h4 className="font-tech text-xs font-bold uppercase tracking-wider text-slate-200">
+                        تمامی مسابقات ثبت‌شده در تورنمنت ({recentMatches.length} مسابقه)
+                      </h4>
+                    </div>
+                    <span className="text-[10px] font-tech text-slate-500">
+                      ریز نتایج بازی ۱ و ۲
+                    </span>
                   </div>
                   <div className="space-y-2">
                     {recentMatches.map((match, idx) => (
@@ -257,7 +270,7 @@ export const TeamModal: React.FC<TeamModalProps> = ({ team, onClose }) => {
                         </div>
                         <div className="flex items-center gap-1.5">
                           <span className="px-1.5 py-0.5 rounded bg-white/5 text-slate-300 text-[10px] font-mono font-bold border border-white/10">
-                            {player.position}
+                            {player.position || player.role || 'PLAYER'}
                           </span>
                           {player.isCaptain && (
                             <span className="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 text-[10px] font-bold border border-amber-500/30">
