@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Activity, Flag, Calendar, Award, Users } from 'lucide-react';
+import { X, Activity, Flag, Calendar, Award } from 'lucide-react';
 import { TournamentTeam } from '../types';
 import { TELEGRAM_CHANNEL_URL, TELEGRAM_CHANNEL_HANDLE } from '../data/tournamentData';
 
@@ -112,41 +112,23 @@ export const TeamModal: React.FC<TeamModalProps> = ({ team, onClose }) => {
 
             {/* Modal Body with smooth scrolling */}
             <div className="p-5 sm:p-6 space-y-5 max-h-[75vh] overflow-y-auto">
-              {/* Stats Grid */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
-                <div className="bg-[#08130d] p-3 rounded border border-white/5 flex flex-col justify-between">
-                  <span className="text-[10px] font-tech text-slate-400 uppercase">بازی‌ها (P)</span>
-                  <span className="font-esports font-bold text-2xl text-white mt-1">{team.played}</span>
+              {/* Stats Grid - Only Played, Goal Difference, and Points */}
+              <div className="grid grid-cols-3 gap-2.5 sm:gap-3">
+                <div className="bg-[#08130d] p-3.5 rounded border border-white/5 flex flex-col justify-between">
+                  <span className="text-[11px] font-tech text-slate-400 uppercase tracking-wider">تعداد بازی (P)</span>
+                  <span className="font-esports font-bold text-2xl sm:text-3xl text-white mt-1">{team.played}</span>
                 </div>
-                <div className="bg-[#08130d] p-3 rounded border border-white/5 flex flex-col justify-between">
-                  <span className="text-[10px] font-tech text-slate-400 uppercase">برد / تساوی / باخت</span>
-                  <span className="font-esports font-bold text-lg text-white mt-1">
-                    <span className="text-[#00ff66]">{team.wins}</span>
-                    <span className="text-slate-600 mx-1">/</span>
-                    <span className="text-yellow-400">{team.draws}</span>
-                    <span className="text-slate-600 mx-1">/</span>
-                    <span className="text-red-400">{team.losses}</span>
-                  </span>
-                </div>
-                <div className="bg-[#08130d] p-3 rounded border border-white/5 flex flex-col justify-between">
-                  <span className="text-[10px] font-tech text-slate-400 uppercase">گل زده (GF)</span>
-                  <span className="font-esports font-bold text-2xl text-slate-200 mt-1">{team.goalsFor}</span>
-                </div>
-                <div className="bg-[#08130d] p-3 rounded border border-white/5 flex flex-col justify-between">
-                  <span className="text-[10px] font-tech text-slate-400 uppercase">گل خورده (GA)</span>
-                  <span className="font-esports font-bold text-2xl text-slate-300 mt-1">{team.goalsAgainst}</span>
-                </div>
-                <div className="bg-[#08130d] p-3 rounded border border-white/5 flex flex-col justify-between">
-                  <span className="text-[10px] font-tech text-slate-400 uppercase">تفاضل گل (GD)</span>
-                  <span className={`font-esports font-bold text-2xl mt-1 ${
-                    goalDiff > 0 ? 'text-[#00ff66]' : goalDiff < 0 ? 'text-red-400' : 'text-white'
+                <div className="bg-[#08130d] p-3.5 rounded border border-white/5 flex flex-col justify-between">
+                  <span className="text-[11px] font-tech text-slate-400 uppercase tracking-wider">تفاضل گل (GD)</span>
+                  <span className={`font-esports font-bold text-2xl sm:text-3xl mt-1 ${
+                    goalDiff > 0 ? 'text-[#00ff66]' : goalDiff < 0 ? 'text-red-400' : 'text-slate-300'
                   }`}>
                     {goalDiff > 0 ? `+${goalDiff}` : goalDiff}
                   </span>
                 </div>
-                <div className="bg-[#0a2014] p-3 rounded border border-[#00ff66]/40 flex flex-col justify-between shadow-[0_0_15px_rgba(0,255,102,0.1)]">
-                  <span className="text-[10px] font-tech text-[#00ff66] uppercase font-bold">امتیاز (PTS)</span>
-                  <span className="font-esports font-black text-3xl text-[#00ff66] mt-0.5">{team.points}</span>
+                <div className="bg-[#0a2014] p-3.5 rounded border border-[#00ff66]/40 flex flex-col justify-between shadow-[0_0_15px_rgba(0,255,102,0.15)]">
+                  <span className="text-[11px] font-tech text-[#00ff66] uppercase font-bold tracking-wider">مجموع امتیاز (PTS)</span>
+                  <span className="font-esports font-black text-3xl sm:text-4xl text-[#00ff66] mt-0.5">{team.points}</span>
                 </div>
               </div>
 
@@ -239,45 +221,6 @@ export const TeamModal: React.FC<TeamModalProps> = ({ team, onClose }) => {
                         >
                           {match.result === 'W' ? 'برد' : match.result === 'D' ? 'مساوی' : 'باخت'}
                         </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Squad / Key Players */}
-              {team.roster && team.roster.length > 0 && (
-                <div>
-                  <div className="flex items-center gap-2 mb-3">
-                    <Users className="w-4 h-4 text-[#00ff66]" />
-                    <h4 className="font-tech text-xs font-bold uppercase tracking-wider text-slate-200">
-                      لیست بازیکنان و ستاره‌ها (SQUAD ROSTER)
-                    </h4>
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {team.roster.map((player, idx) => (
-                      <div
-                        key={idx}
-                        className="flex items-center justify-between p-2.5 rounded bg-[#040806] border border-white/5 text-xs font-tech hover:border-[#00ff66]/40 transition-colors"
-                      >
-                        <div className="flex items-center gap-2">
-                          <span className="w-6 h-6 rounded bg-[#00ff66]/10 text-[#00ff66] font-mono font-bold flex items-center justify-center text-[11px] border border-[#00ff66]/30">
-                            #{player.number}
-                          </span>
-                          <span className="font-condensed font-bold text-white text-sm tracking-wide">
-                            {player.name}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-1.5">
-                          <span className="px-1.5 py-0.5 rounded bg-white/5 text-slate-300 text-[10px] font-mono font-bold border border-white/10">
-                            {player.position || player.role || 'PLAYER'}
-                          </span>
-                          {player.isCaptain && (
-                            <span className="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 text-[10px] font-bold border border-amber-500/30">
-                              CAPTAIN
-                            </span>
-                          )}
-                        </div>
                       </div>
                     ))}
                   </div>

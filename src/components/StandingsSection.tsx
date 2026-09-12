@@ -83,19 +83,14 @@ export const StandingsSection: React.FC<StandingsSectionProps> = ({ onSelectTeam
         <div className="panel-doomsday panel-corner-accents rounded-sm overflow-hidden border border-[#00ff66]/30">
           
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse min-w-[720px]">
+            <table className="w-full text-left border-collapse min-w-[540px]">
               <thead>
-                <tr className="border-b border-white/10 bg-[#040806] text-[11px] font-tech font-bold text-[#00ff66] uppercase tracking-widest">
+                <tr className="border-b border-white/10 bg-[#040806] text-[12px] font-tech font-bold text-[#00ff66] uppercase tracking-wider">
                   <th className="py-4 px-4 sm:px-6 w-16 text-center">#</th>
-                  <th className="py-4 px-4 sm:px-6">TEAM</th>
-                  <th className="py-4 px-3 text-center" title="Matches Played">P</th>
-                  <th className="py-4 px-3 text-center" title="Matches Won">W</th>
-                  <th className="py-4 px-3 text-center" title="Matches Drawn">D</th>
-                  <th className="py-4 px-3 text-center" title="Matches Lost">L</th>
-                  <th className="py-4 px-3 text-center hidden sm:table-cell" title="Goals For">GF</th>
-                  <th className="py-4 px-3 text-center hidden sm:table-cell" title="Goals Against">GA</th>
-                  <th className="py-4 px-4 text-center" title="Goal Difference">GD</th>
-                  <th className="py-4 px-4 sm:px-6 text-right" title="Points">PTS</th>
+                  <th className="py-4 px-4 sm:px-6">تیم • TEAM</th>
+                  <th className="py-4 px-4 text-center" title="تعداد بازی • Matches Played">بازی • P</th>
+                  <th className="py-4 px-4 text-center" title="تفاضل گل • Goal Difference">تفاضل • GD</th>
+                  <th className="py-4 px-4 sm:px-6 text-right" title="امتیاز کل • Total Points">امتیاز • PTS</th>
                 </tr>
               </thead>
               <AnimatePresence mode="wait">
@@ -159,46 +154,21 @@ export const StandingsSection: React.FC<StandingsSectionProps> = ({ onSelectTeam
                             </span>
                             {team.played > 0 && (
                               <span className="text-[10px] font-tech text-[#00ff66] font-bold">
-                                {team.played} MATCHES PLAYED • {team.points} PTS
+                                {team.played} بازی • {team.points} امتیاز
                               </span>
                             )}
                           </div>
                         </div>
                       </td>
 
-                      {/* Played (Series) */}
-                      <td className="py-4 px-3 text-center text-sm sm:text-base font-tech text-slate-300 font-bold">
+                      {/* Played */}
+                      <td className="py-4 px-4 text-center text-sm sm:text-base font-tech text-slate-200 font-bold">
                         {team.played}
-                      </td>
-
-                      {/* Wins */}
-                      <td className="py-4 px-3 text-center text-sm sm:text-base font-tech text-white font-bold">
-                        {team.wins}
-                      </td>
-
-                      {/* Draws */}
-                      <td className="py-4 px-3 text-center text-sm sm:text-base font-tech text-slate-400">
-                        {team.draws}
-                      </td>
-
-                      {/* Losses */}
-                      <td className="py-4 px-3 text-center text-sm sm:text-base font-tech text-slate-500">
-                        {team.losses}
-                      </td>
-
-                      {/* Goals For */}
-                      <td className="py-4 px-3 text-center text-sm sm:text-base font-tech text-slate-300 hidden sm:table-cell">
-                        {team.goalsFor}
-                      </td>
-
-                      {/* Goals Against */}
-                      <td className="py-4 px-3 text-center text-sm sm:text-base font-tech text-slate-400 hidden sm:table-cell">
-                        {team.goalsAgainst}
                       </td>
 
                       {/* Goal Difference */}
                       <td className="py-4 px-4 text-center text-sm sm:text-base font-tech">
-                        <span className={goalDiff > 0 ? 'text-[#00ff66] font-bold' : goalDiff < 0 ? 'text-red-400 font-bold' : 'text-slate-400'}>
+                        <span className={goalDiff > 0 ? 'text-[#00ff66] font-bold' : goalDiff < 0 ? 'text-red-400 font-bold' : 'text-slate-400 font-bold'}>
                           {goalDiff > 0 ? `+${goalDiff}` : goalDiff}
                         </span>
                       </td>
@@ -209,14 +179,15 @@ export const StandingsSection: React.FC<StandingsSectionProps> = ({ onSelectTeam
                           <span
                             className={`font-esports font-black text-xl sm:text-2xl tracking-wider ${
                               isLeader
-                                ? 'text-[#00ff66] drop-shadow-[0_0_10px_rgba(0,255,102,0.6)]'
+                                ? 'text-[#00ff66] drop-shadow-[0_0_10px_rgba(0,255,102,0.8)]'
                                 : isTopFour
                                 ? 'text-white'
-                                : 'text-slate-400'
+                                : 'text-slate-300'
                             }`}
                           >
                             {team.points}
                           </span>
+                          <span className="text-[10px] font-tech text-slate-500 font-bold">PTS</span>
                           <ChevronRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-[#00ff66] transition-colors" />
                         </div>
                       </td>
