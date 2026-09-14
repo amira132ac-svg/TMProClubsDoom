@@ -81,7 +81,7 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onSelectTeamByName }
               {topScorer ? topScorers.map((p) => p.name).join(' & ') : 'AWAITING STATS'}
             </div>
             <div className="text-[11px] font-tech text-[#00ff66] mt-1 flex items-center justify-between">
-              <span className="truncate pr-2">{topScorer ? `${topScorers.map((p) => p.team).join(' / ')} (${topScorer.matchesPlayed} MATCHES)` : 'ROUND 1 PENDING'}</span>
+              <span className="truncate pr-2">{topScorer ? topScorers.map((p) => p.team).join(' / ') : 'ROUND 1 PENDING'}</span>
               <span className="text-amber-400 font-bold flex items-center gap-1 shrink-0">
                 <Medal className="w-3 h-3" />
                 BOOT
@@ -241,21 +241,19 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onSelectTeamByName }
                   <th className="py-3.5 px-4 w-14 text-center">#</th>
                   <th className="py-3.5 px-4">PLAYER</th>
                   <th className="py-3.5 px-4">CLUB</th>
-                  <th className="py-3.5 px-4 text-center w-24">MATCHES</th>
                   <th className="py-3.5 px-4 text-center w-28 text-[#00ff66]">
                     {activeTab === 'scorers' ? 'GOALS' : 'ASSISTS'}
                   </th>
                   <th className="py-3.5 px-4 text-center w-24 hidden sm:table-cell">
                     {activeTab === 'scorers' ? 'ASSISTS' : 'GOALS'}
                   </th>
-                  <th className="py-3.5 px-4 text-center w-24 hidden md:table-cell">RATIO</th>
                   <th className="py-3.5 px-4 text-center w-36">HONOR</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5 text-sm font-condensed">
                 {filteredList.length === 0 ? (
                   <tr>
-                    <td colSpan={8} className="py-12 text-center text-slate-400 font-tech">
+                    <td colSpan={6} className="py-12 text-center text-slate-400 font-tech">
                       <Shield className="w-8 h-8 text-slate-600 mx-auto mb-2" />
                       <p className="text-white font-bold text-sm">NO PLAYERS FOUND FOR SELECTED LEAGUE</p>
                       <p className="text-xs text-slate-500 mt-1">Player stats for this league will appear once submitted by match directors.</p>
@@ -266,7 +264,6 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onSelectTeamByName }
                     const rank = idx + 1;
                     const primaryStat = activeTab === 'scorers' ? player.goals : player.assists;
                     const secondaryStat = activeTab === 'scorers' ? player.assists : player.goals;
-                    const ratio = (primaryStat / Math.max(player.matchesPlayed, 1)).toFixed(2);
 
                     return (
                       <tr
@@ -328,11 +325,6 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onSelectTeamByName }
                           </button>
                         </td>
 
-                        {/* Matches */}
-                        <td className="py-3.5 px-4 text-center font-tech text-slate-300 font-bold">
-                          {player.matchesPlayed}
-                        </td>
-
                         {/* Primary Stat Count (Goals or Assists) */}
                         <td className="py-3.5 px-4 text-center font-esports font-black text-xl text-[#00ff66]">
                           {primaryStat}
@@ -341,11 +333,6 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onSelectTeamByName }
                         {/* Secondary Stat (Assists or Goals) */}
                         <td className="py-3.5 px-4 text-center font-tech text-slate-400 hidden sm:table-cell">
                           {secondaryStat}
-                        </td>
-
-                        {/* Ratio */}
-                        <td className="py-3.5 px-4 text-center font-tech text-slate-400 hidden md:table-cell">
-                          {ratio} / m
                         </td>
 
                         {/* Status / Honor */}
