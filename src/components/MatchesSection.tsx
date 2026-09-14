@@ -36,16 +36,16 @@ export const MatchesSection: React.FC<MatchesSectionProps> = ({ onSelectTeamByNa
 
   const getTeamShortCode = (name: string): string => {
     const n = name.toLowerCase().trim();
-    if (n.includes('tehran')) return 'TLG';
+    if (n.includes('tehran') || n.includes('legacy')) return 'TLG';
     if (n.includes('banger')) return 'BNG';
     if (n.includes('royal')) return 'RMD';
     if (n.includes('18v')) return '18V';
     if (n.includes('spirit')) return 'SPI';
     if (n.includes('alnahd') || n.includes('al nahd')) return 'ALN';
     if (n.includes('invader')) return 'INV';
-    if (n.includes('mehrgan')) return 'AMF';
+    if (n.includes('mehrgan') || n.includes('arya')) return 'AMF';
     if (n.includes('adab')) return 'ADB';
-    if (n.includes('shamooshak')) return 'SHM';
+    if (n.includes('shamooshak') || n.includes('shamoshak')) return 'SHM';
     if (n.includes('110')) return '110';
     if (n.includes('pars')) return 'PRS';
     if (n.includes('mess')) return 'MSH';

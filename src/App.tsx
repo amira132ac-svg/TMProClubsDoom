@@ -55,7 +55,11 @@ export default function App() {
   // Find team by name and open modal
   const handleSelectTeamByName = (teamName: string) => {
     const clean = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '');
-    const target = clean(teamName);
+    let target = clean(teamName);
+    if (target.includes('viking')) target = 'peaky';
+    if (target.includes('shamoshak')) target = 'shamooshak';
+    if (target === 'legacy') target = 'tehranlegacy';
+    if (target === 'arya') target = 'aryamehrgan';
     const found = ALL_TEAMS.find((t) => {
       const teamClean = clean(t.name);
       return teamClean === target || teamClean.includes(target) || target.includes(teamClean);

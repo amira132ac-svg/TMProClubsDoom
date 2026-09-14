@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Trophy, Target, Shield, Send, Activity, Sparkles, Medal } from 'lucide-react';
-import { TOP_SCORERS, TOP_ASSISTS, TELEGRAM_CHANNEL_URL, TELEGRAM_CHANNEL_HANDLE } from '../data/tournamentData';
+import { TOP_SCORERS, TOP_ASSISTS, TOURNAMENT_MATCHES, TELEGRAM_CHANNEL_URL, TELEGRAM_CHANNEL_HANDLE } from '../data/tournamentData';
 
 interface StatsSectionProps {
   onSelectTeamByName?: (teamName: string) => void;
@@ -15,12 +15,30 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onSelectTeamByName }
     (player) => selectedGroup === 'ALL' || player.group === selectedGroup
   );
 
-  const topScorer = TOP_SCORERS.find(
+  const topScorerList = TOP_SCORERS.filter(
     (player) => selectedGroup === 'ALL' || player.group === selectedGroup
   );
-  const topAssister = TOP_ASSISTS.find(
+  const topScorer = topScorerList[0];
+  const maxGoals = topScorer?.goals ?? 0;
+  const topScorers = topScorerList.filter((p) => p.goals === maxGoals);
+
+  const topAssisterList = TOP_ASSISTS.filter(
     (player) => selectedGroup === 'ALL' || player.group === selectedGroup
   );
+  const topAssister = topAssisterList[0];
+  const maxAssists = topAssister?.assists ?? 0;
+  const topAssisters = topAssisterList.filter((p) => p.assists === maxAssists);
+
+  const totalMatchesCount = TOURNAMENT_MATCHES.reduce(
+    (acc, m) => acc + (m.legs ? m.legs.length : 1),
+    0
+  );
+  const totalGoalsScored = TOURNAMENT_MATCHES.reduce((acc, m) => {
+    if (m.legs) {
+      return acc + m.legs.reduce((legAcc, l) => legAcc + (l.homeScore || 0) + (l.awayScore || 0), 0);
+    }
+    return acc + (m.homeScore || 0) + (m.awayScore || 0);
+  }, 0);
 
   return (
     <section id="stats" className="py-16 sm:py-24 relative overflow-hidden">
@@ -60,11 +78,11 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onSelectTeamByName }
               </span>
             </div>
             <div className="font-esports font-black text-xl sm:text-2xl text-white tracking-wide truncate">
-              {topScorer ? topScorer.name : 'AWAITING STATS'}
+              {topScorer ? topScorers.map((p) => p.name).join(' & ') : 'AWAITING STATS'}
             </div>
             <div className="text-[11px] font-tech text-[#00ff66] mt-1 flex items-center justify-between">
-              <span>{topScorer ? `${topScorer.team} (${topScorer.matchesPlayed} MATCHES)` : 'ROUND 1 PENDING'}</span>
-              <span className="text-amber-400 font-bold flex items-center gap-1">
+              <span className="truncate pr-2">{topScorer ? `${topScorers.map((p) => p.team).join(' / ')} (${topScorer.matchesPlayed} MATCHES)` : 'ROUND 1 PENDING'}</span>
+              <span className="text-amber-400 font-bold flex items-center gap-1 shrink-0">
                 <Medal className="w-3 h-3" />
                 BOOT
               </span>
@@ -83,15 +101,11 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onSelectTeamByName }
               </span>
             </div>
             <div className="font-esports font-black text-xl sm:text-2xl text-white tracking-wide truncate">
-              {topAssister
-                ? topAssister.team === 'INVADERZ' && selectedGroup !== 'B'
-                  ? `${topAssister.name} & m.asli`
-                  : topAssister.name
-                : 'AWAITING STATS'}
+              {topAssister ? topAssisters.map((p) => p.name).join(' & ') : 'AWAITING STATS'}
             </div>
             <div className="text-[11px] font-tech text-[#00ff66] mt-1 flex items-center justify-between">
-              <span>{topAssister ? `${topAssister.team}` : 'ROUND 1 PENDING'}</span>
-              <span className="text-[#00ff66] font-bold">PLAYMAKER</span>
+              <span className="truncate pr-2">{topAssister ? topAssisters.map((p) => p.team).join(' / ') : 'ROUND 1 PENDING'}</span>
+              <span className="text-[#00ff66] font-bold shrink-0">PLAYMAKER</span>
             </div>
           </div>
 
@@ -107,10 +121,10 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onSelectTeamByName }
               </span>
             </div>
             <div className="font-esports font-black text-2xl sm:text-3xl text-white tracking-wide">
-              84 <span className="text-xs font-tech text-[#00ff66] font-bold">GOALS SCORED</span>
+              {totalGoalsScored} <span className="text-xs font-tech text-[#00ff66] font-bold">GOALS SCORED</span>
             </div>
             <div className="text-[11px] font-tech text-slate-400 mt-1">
-              Completed Matches: <span className="text-white font-bold">18 Matches (9 Series)</span>
+              Completed Matches: <span className="text-white font-bold">{totalMatchesCount} Matches ({TOURNAMENT_MATCHES.length} Series)</span>
             </div>
           </div>
 
