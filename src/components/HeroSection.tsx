@@ -247,7 +247,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               OFFICIAL FIXTURES & DRAW CHANNEL
             </span>
             <span className="text-[11px] px-2 py-0.5 rounded bg-[#00ff66]/10 text-[#00ff66] border border-[#00ff66]/30 font-bold">
-              PRE-SEASON
+              WEDNESDAY FINALS
             </span>
           </div>
 
@@ -262,18 +262,18 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </div>
             <div className="bg-[#050b08] p-2.5 rounded-sm border border-white/5">
               <span className="font-esports font-black text-2xl text-white block leading-none text-white">
-                2
+                FINALS
               </span>
               <span className="text-[10px] font-tech font-bold text-slate-400 tracking-wider uppercase">
-                LEAGUES
+                STAGE
               </span>
             </div>
             <div className="bg-[#050b08] p-2.5 rounded-sm border border-white/5">
               <span className="font-esports font-black text-2xl text-white block leading-none text-slate-300">
-                0
+                WED
               </span>
               <span className="text-[10px] font-tech font-bold text-slate-400 tracking-wider uppercase">
-                MATCHES
+                MATCHDAY
               </span>
             </div>
             <div className="bg-[#050b08] p-2.5 rounded-sm border border-white/5">

@@ -22,9 +22,9 @@ export const SectionNavTabs: React.FC<SectionNavTabsProps> = ({
   }[] = [
     {
       id: 'standings',
-      label: 'STANDINGS',
-      sublabel: 'جدول رده‌بندی',
-      badge: 'LEAGUE 1 & 2',
+      label: 'SCHEDULE',
+      sublabel: 'جدول مسابقات',
+      badge: 'WEDNESDAY',
       icon: Trophy,
     },
     {
